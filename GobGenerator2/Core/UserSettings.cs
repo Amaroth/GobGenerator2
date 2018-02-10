@@ -46,6 +46,7 @@ namespace GobGenerator2.Core
         public string prefix = "[Gen]";
         public string postfix = " [Do not edit]";
         public bool useInsert = true;
+        public bool avoidDuplicates = false;
 
         public int minDisplayID = 0;
         public int maxDisplayID = 16777215;
@@ -84,6 +85,7 @@ namespace GobGenerator2.Core
             Utilities.XmlAddElement(xml, xml.DocumentElement, "prefix", prefix, null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "postfix", postfix, null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "useInsert", useInsert.ToString(), null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "avoidDuplicates", avoidDuplicates.ToString(), null);
         }
 
         /// <summary>
@@ -120,6 +122,7 @@ namespace GobGenerator2.Core
                     prefix = xml.GetElementsByTagName("prefix")[0].InnerText;
                     postfix = xml.GetElementsByTagName("postfix")[0].InnerText;
                     useInsert = xml.GetElementsByTagName("useInsert")[0].InnerText.ToLower() == "true";
+                    useInsert = xml.GetElementsByTagName("avoidDuplicates")[0].InnerText.ToLower() == "true";
                 }
                 catch (Exception e)
                 {
@@ -156,6 +159,7 @@ namespace GobGenerator2.Core
                 xml.GetElementsByTagName("prefix")[0].InnerText = prefix;
                 xml.GetElementsByTagName("postfix")[0].InnerText = postfix;
                 xml.GetElementsByTagName("useInsert")[0].InnerText = useInsert.ToString();
+                xml.GetElementsByTagName("avoidDuplicates")[0].InnerText = avoidDuplicates.ToString();
 
                 xml.Save(tw);
                 tw.Close();

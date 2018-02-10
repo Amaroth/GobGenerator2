@@ -82,6 +82,7 @@
     </ApplicationDefinition>
     <Compile Include="Core\Core.cs" />
     <Compile Include="Core\DBCConnector.cs" />
+    <Compile Include="Core\ListfileConnector.cs" />
     <Compile Include="Core\SQLConnector.cs" />
     <Compile Include="Core\UserSettings.cs" />
     <Compile Include="Core\Utilities.cs" />

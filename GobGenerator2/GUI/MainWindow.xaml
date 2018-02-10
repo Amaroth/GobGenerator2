@@ -188,6 +188,11 @@
                 <TextBlock TextWrapping="Wrap" MaxWidth="300">Tests wheter database connection information you provided can be used for establishing database connection.</TextBlock>
             </Button.ToolTip>
         </Button>
+        <CheckBox Grid.Column="2" Grid.Row="14" Name="avoidDuplicatesBox" Content="Avoid duplicates" VerticalAlignment="Center" Checked="avoidDuplicatesBox_Checked" Unchecked="avoidDuplicatesBox_Checked">
+            <CheckBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">If checked, each model in listfile will be checked, wheter it doesn't already exist in GameObjectDisplayInfo.dbc, and in that case ignored. Slows generation down.</TextBlock>
+            </CheckBox.ToolTip>
+        </CheckBox>
         <Button Grid.Column="2" Grid.Row="15" Name="collisionButt" Content="Check for collisions" Click="collisionButt_Click" Margin="5,0,5,0">
             <Button.ToolTip>
                 <TextBlock TextWrapping="Wrap" MaxWidth="300">Checks wheter all displayIDs and entries which are going to be needed are really free in DBC and in database.</TextBlock>
@@ -226,5 +231,6 @@
             </xctk:IntegerUpDown>
             <Button Grid.Column="5" Name="syncButt" Content="Only displayID > Gob" Click="syncButt_Click" Margin="5,0,5,0"/>
         </Grid>
+        <Button Name="TestButt" Content="TestButt" Grid.Column="1" Grid.Row="18" Click="TestButt_Click_1"/>
     </Grid>
 </Window>

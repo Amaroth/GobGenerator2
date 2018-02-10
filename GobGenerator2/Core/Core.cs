@@ -28,24 +28,12 @@ namespace GobGenerator2.Core
         }
 
         private UserSettings usi = UserSettings.Instance;
-        MySqlConnection connection;
+        private SQLConnector sql = new SQLConnector();
+        private ListfileConnector lc = new ListfileConnector();
 
         public void TestConnection()
         {
-            string conString = string.Format("Server={0}; Port={1}; Database={2}; Uid={3}; Pwd={4}; SslMode=none;", usi.host, usi.port, usi.database, usi.login, usi.password);
-
-            try
-            {
-                connection = new MySqlConnection(conString);
-                connection.Open();
-                MessageBox.Show("Connection was succesful.");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Connection wasn't succesful. Error:\n\n" + e.ToString());
-                connection = null;
-            }
-
+            sql.TestConnection(usi.host, usi.port, usi.database, usi.login, usi.password);
         }
 
         public void CheckForCollisions()
@@ -71,6 +59,11 @@ namespace GobGenerator2.Core
         public void Help()
         {
 
+        }
+
+        public void Test()
+        {
+            lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO);
         }
     }
 }
