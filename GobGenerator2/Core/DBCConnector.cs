@@ -20,9 +20,9 @@ namespace GobGenerator2.Core
 
         }
 
-        public List<string> AlreadyThere(string filePath)
+        public HashSet<string> AlreadyThere(string filePath)
         {
-            List<string> result = new List<string>();
+            HashSet<string> result = new HashSet<string>();
             if (File.Exists(filePath))
             {
                 try
@@ -30,9 +30,9 @@ namespace GobGenerator2.Core
                     var dbc = DBReader.Read<GameObjectDisplayInfo>(@"GameObjectDisplayInfo.dbc");
                     foreach (var row in dbc.Rows)
                     {
-                        if (row.ModelName.EndsWith(".wmo"))
+                        if (row.ModelName.ToLower().EndsWith(".wmo"))
                             result.Add(row.ModelName.ToLower());
-                        else if (row.ModelName.Length > 3)
+                        else if (row.ModelName.Length > 3 && row.ModelName.ToLower().EndsWith(".mdx"))
                             result.Add(row.ModelName.ToLower().Substring(0, row.ModelName.Length - 3) + "m2");
                     }
                 }

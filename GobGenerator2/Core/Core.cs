@@ -45,7 +45,7 @@ namespace GobGenerator2.Core
 
         public void Generate()
         {
-            List<string> alreadyThere = new List<string>();
+            HashSet<string> alreadyThere = new HashSet<string>();
             if (usi.avoidDuplicates)
                 alreadyThere = dbc.AlreadyThere(usi.dbcPath);
             lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, usi.avoidDuplicates, alreadyThere);

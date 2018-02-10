@@ -11,11 +11,11 @@ namespace GobGenerator2.Core
 {
     class ListfileConnector
     {
-        private List<Tuple<bool, string>> filePaths;
+        private HashSet<string> filePaths;
 
-        public void ReadListfile(string filePath, bool exportM2, bool exportWMO, bool avoidDuplicates, List<string> alreadyThere)
+        public void ReadListfile(string filePath, bool exportM2, bool exportWMO, bool avoidDuplicates, HashSet<string> alreadyThere)
         {
-            filePaths = new List<Tuple<bool, string>>();
+            filePaths = new HashSet<string>();
             try
             {
                 StreamReader sr = new StreamReader(filePath);
@@ -24,20 +24,30 @@ namespace GobGenerator2.Core
 
                 while ((line = sr.ReadLine()) != null)
                 {
-                    string lowLine = line.ToLower();
-                    if (!alreadyThere.Contains(lowLine) || !avoidDuplicates)
+                    line = line.ToLower();
+                    if (!alreadyThere.Contains(line) || !avoidDuplicates)
                     {
-                        if (exportM2 && lowLine.EndsWith(".m2"))
-                            filePaths.Add(new Tuple<bool, string>(false, line));
-                        else if (exportWMO && lowLine.EndsWith(".wmo") && !reg.IsMatch(lowLine))
-                            filePaths.Add(new Tuple<bool, string>(true, line));
+                        if (exportM2 && line.EndsWith(".m2"))
+                            filePaths.Add(line);
+                        else if (exportWMO && line.EndsWith(".wmo") && !reg.IsMatch(line))
+                            filePaths.Add(line);
                     }
                 }
             }
             catch (Exception e)
             {
-                filePaths = new List<Tuple<bool, string>>();
+                filePaths = new HashSet<string>();
                 MessageBox.Show("Error while attempting to read " + filePath + "\n\n" + e.ToString());
+            }
+            using (StreamWriter sw = new StreamWriter("filteredListfile.txt"))
+            {
+                foreach (string s in filePaths)
+                    sw.WriteLine(s);
+            }
+            using (StreamWriter sw = new StreamWriter("alreadyThere.txt"))
+            {
+                foreach (string s in alreadyThere)
+                    sw.WriteLine(s);
             }
         }
     }
