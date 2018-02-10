@@ -67,7 +67,8 @@ namespace GobGenerator2
 
         private void collisionButt_Click(object sender, RoutedEventArgs e)
         {
-
+            DBCConnector connector = new DBCConnector();
+            connector.ConnectDBC(usi.dbcPath);
         }
 
         private void Window_Drop(object sender, DragEventArgs e)

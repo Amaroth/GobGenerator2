@@ -13,8 +13,6 @@ namespace GobGenerator2
     class UserSettings
     {
         private static UserSettings instance;
-        private XmlDocument xml = new XmlDocument();
-        private XmlDocument defaultXml = new XmlDocument();
 
         private UserSettings()
         {
@@ -31,6 +29,9 @@ namespace GobGenerator2
                 return instance;
             }
         }
+
+        private XmlDocument xml = new XmlDocument();
+        private XmlDocument defaultXml = new XmlDocument();
 
         public string listfilePath = "(listfile)";
         public string dbcPath = "GameObjectDisplayInfo.dbc";
