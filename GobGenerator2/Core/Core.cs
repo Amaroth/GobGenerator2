@@ -6,23 +6,55 @@ using System.Threading.Tasks;
 
 namespace GobGenerator2.Core
 {
-    class Core
+    class CoreController
     {
-        private static Core instance;
+        private static CoreController instance;
 
-        private Core()
+        private CoreController()
         {
 
         }
 
-        public static Core Instance
+        public static CoreController Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Core();
+                    instance = new CoreController();
                 return instance;
             }
+        }
+
+        private UserSettings usi = UserSettings.Instance;
+
+        public void TestConnection()
+        {
+
+        }
+
+        public void CheckForCollisions()
+        {
+
+        }
+
+        public void Generate()
+        {
+
+        }
+
+        public void OnlyDisplayToDB()
+        {
+
+        }
+
+        public void SaveUserSettings()
+        {
+            usi.SaveUserSettings();
+        }
+
+        public void Help()
+        {
+
         }
     }
 }

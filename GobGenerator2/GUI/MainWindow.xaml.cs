@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
 using Microsoft.Win32;
-using System.Text.RegularExpressions;
+using GobGenerator2.Core;
 
-namespace GobGenerator2
+namespace GobGenerator2.GUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,6 +11,7 @@ namespace GobGenerator2
     public partial class MainWindow : Window
     {
         UserSettings usi = UserSettings.Instance;
+        CoreController core = CoreController.Instance;
 
         public MainWindow()
         {
@@ -32,7 +20,7 @@ namespace GobGenerator2
 
         private void generateButt_Click(object sender, RoutedEventArgs e)
         {
-
+            core.Generate();
         }
 
         private void listfileButt_Click(object sender, RoutedEventArgs e)
@@ -52,23 +40,22 @@ namespace GobGenerator2
 
         private void testButt_Click(object sender, RoutedEventArgs e)
         {
-
+            core.TestConnection();
         }
 
         private void saveButt_Click(object sender, RoutedEventArgs e)
         {
-            usi.SaveUserSettings();
+            core.SaveUserSettings();
         }
 
         private void helpButt_Click(object sender, RoutedEventArgs e)
         {
-
+            core.Help();
         }
 
         private void collisionButt_Click(object sender, RoutedEventArgs e)
         {
-            DBCConnector connector = new DBCConnector();
-            connector.ConnectDBC(usi.dbcPath);
+            core.CheckForCollisions();
         }
 
         private void Window_Drop(object sender, DragEventArgs e)
@@ -181,7 +168,7 @@ namespace GobGenerator2
 
         private void syncButt_Click(object sender, RoutedEventArgs e)
         {
-
+            core.OnlyDisplayToDB();
         }
 
         private void portBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

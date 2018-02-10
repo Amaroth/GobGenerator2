@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GobGenerator2
+namespace GobGenerator2.Core
 {
     class SQLConnector
     {

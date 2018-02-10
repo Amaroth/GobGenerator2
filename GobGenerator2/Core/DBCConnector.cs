@@ -7,7 +7,7 @@ using WDBXLib;
 using WDBXLib.Reader;
 using WDBXLib.Definitions.WotLK;
 
-namespace GobGenerator2
+namespace GobGenerator2.Core
 {
     class DBCConnector
     {

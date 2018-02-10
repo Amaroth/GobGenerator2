@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
 using System.Xml;
-using System.Security.Cryptography;
 
-namespace GobGenerator2
+namespace GobGenerator2.Core
 {
     class UserSettings
     {
@@ -31,7 +27,6 @@ namespace GobGenerator2
         }
 
         private XmlDocument xml = new XmlDocument();
-        private XmlDocument defaultXml = new XmlDocument();
 
         public string listfilePath = "(listfile)";
         public string dbcPath = "GameObjectDisplayInfo.dbc";
@@ -60,34 +55,35 @@ namespace GobGenerator2
         /// </summary>
         private void DefaultSettings()
         {
-            XmlDeclaration declaration = defaultXml.CreateXmlDeclaration("1.0", "UTF-8", null);
-            XmlElement root = defaultXml.DocumentElement;
-            defaultXml.InsertBefore(declaration, root);
-            XmlElement configs = defaultXml.CreateElement("GobGenerator2Config");
-            XmlComment comment = defaultXml.CreateComment("Please, do not edit this XML directly unless you really have to. Otherwise use Save settings button.");
-            defaultXml.AppendChild(comment);
-            defaultXml.AppendChild(configs);
+            xml = new XmlDocument();
 
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "listfilePath", listfilePath, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "dbcPath", dbcPath, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "exportM2", exportM2.ToString(), null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "exportWMO", exportWMO.ToString(), null);
+            XmlDeclaration declaration = xml.CreateXmlDeclaration("1.0", "UTF-8", null);
+            XmlElement root = xml.DocumentElement;
+            xml.InsertBefore(declaration, root);
 
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "host", host, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "login", login, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "password", password, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "savePassword", savePassword.ToString(), null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "database", database, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "table", table, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "port", port.ToString(), null);
+            XmlElement configs = xml.CreateElement("GobGenerator2Config");
+            XmlComment comment = xml.CreateComment("Please, do not edit this XML directly unless you really have to. Otherwise use Save settings button.");
+            xml.AppendChild(comment);
+            xml.AppendChild(configs);
 
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "startDisplayID", startDisplayID.ToString(), null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "baseEntry", baseEntry.ToString(), null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "prefix", prefix, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "postfix", postfix, null);
-            Utilities.XmlAddElement(defaultXml, defaultXml.DocumentElement, "useInsert", useInsert.ToString(), null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "listfilePath", listfilePath, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "dbcPath", dbcPath, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "exportM2", exportM2.ToString(), null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "exportWMO", exportWMO.ToString(), null);
 
-            xml = defaultXml;
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "host", host, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "login", login, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "password", password, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "savePassword", savePassword.ToString(), null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "database", database, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "table", table, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "port", port.ToString(), null);
+
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "startDisplayID", startDisplayID.ToString(), null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "baseEntry", baseEntry.ToString(), null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "prefix", prefix, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "postfix", postfix, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "useInsert", useInsert.ToString(), null);
         }
 
         /// <summary>
