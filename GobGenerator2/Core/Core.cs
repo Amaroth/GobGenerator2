@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows;
+using System.IO;
 
 namespace GobGenerator2.Core
 {
@@ -29,6 +30,7 @@ namespace GobGenerator2.Core
 
         private UserSettings usi = UserSettings.Instance;
         private SQLConnector sql = new SQLConnector();
+        private DBCConnector dbc = new DBCConnector();
         private ListfileConnector lc = new ListfileConnector();
 
         public void TestConnection()
@@ -43,7 +45,10 @@ namespace GobGenerator2.Core
 
         public void Generate()
         {
-
+            List<string> alreadyThere = new List<string>();
+            if (usi.avoidDuplicates)
+                alreadyThere = dbc.AlreadyThere(usi.dbcPath);
+            lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, usi.avoidDuplicates, alreadyThere);
         }
 
         public void OnlyDisplayToDB()
@@ -63,7 +68,7 @@ namespace GobGenerator2.Core
 
         public void Test()
         {
-            lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO);
+
         }
     }
 }

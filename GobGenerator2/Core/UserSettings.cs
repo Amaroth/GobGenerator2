@@ -122,7 +122,7 @@ namespace GobGenerator2.Core
                     prefix = xml.GetElementsByTagName("prefix")[0].InnerText;
                     postfix = xml.GetElementsByTagName("postfix")[0].InnerText;
                     useInsert = xml.GetElementsByTagName("useInsert")[0].InnerText.ToLower() == "true";
-                    useInsert = xml.GetElementsByTagName("avoidDuplicates")[0].InnerText.ToLower() == "true";
+                    avoidDuplicates = xml.GetElementsByTagName("avoidDuplicates")[0].InnerText.ToLower() == "true";
                 }
                 catch (Exception e)
                 {

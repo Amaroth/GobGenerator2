@@ -161,6 +161,7 @@ namespace GobGenerator2.GUI
             postfixBox.Text = usi.postfix;
             insertRadio.IsChecked = usi.useInsert;
             replaceRadio.IsChecked = !usi.useInsert;
+            avoidDuplicatesBox.IsChecked = usi.avoidDuplicates;
 
             minDisplayIDBox.Value = usi.minDisplayID;
             maxDisplayIDBox.Value = usi.maxDisplayID;

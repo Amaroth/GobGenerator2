@@ -13,7 +13,7 @@ namespace GobGenerator2.Core
     {
         private List<Tuple<bool, string>> filePaths;
 
-        public void ReadListfile(string filePath, bool exportM2, bool exportWMO)
+        public void ReadListfile(string filePath, bool exportM2, bool exportWMO, bool avoidDuplicates, List<string> alreadyThere)
         {
             filePaths = new List<Tuple<bool, string>>();
             try
@@ -24,10 +24,14 @@ namespace GobGenerator2.Core
 
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (exportM2 && line.ToLower().EndsWith(".m2"))
-                        filePaths.Add(new Tuple<bool, string>(false, line));
-                    else if (exportWMO && line.ToLower().EndsWith(".wmo") && !reg.IsMatch(line))
-                        filePaths.Add(new Tuple<bool, string>(true, line));
+                    string lowLine = line.ToLower();
+                    if (!alreadyThere.Contains(lowLine) || !avoidDuplicates)
+                    {
+                        if (exportM2 && lowLine.EndsWith(".m2"))
+                            filePaths.Add(new Tuple<bool, string>(false, line));
+                        else if (exportWMO && lowLine.EndsWith(".wmo") && !reg.IsMatch(lowLine))
+                            filePaths.Add(new Tuple<bool, string>(true, line));
+                    }
                 }
             }
             catch (Exception e)
