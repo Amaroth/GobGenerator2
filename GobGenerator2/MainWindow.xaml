@@ -1,0 +1,230 @@
+﻿<Window x:Class="GobGenerator2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GobGenerator2"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="GobDisplayGenerator 2.0"
+        Height="450" Width="700" MinHeight="450" MinWidth="680"
+        AllowDrop="True" Drop="Window_Drop">
+    <Grid Margin="10,0,5,5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">Listfile:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">DBC:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center">File types:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center">Database host:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="5" VerticalAlignment="Center">Database login:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="6" VerticalAlignment="Center">Database password:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="7" VerticalAlignment="Center">Database name:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="8" VerticalAlignment="Center">Table name:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="9" VerticalAlignment="Center">Port:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="11" VerticalAlignment="Center">Start displayID:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="12" VerticalAlignment="Center">Base gob entry:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="13" VerticalAlignment="Center">Gob name prefix:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="14" VerticalAlignment="Center">Gob name postfix:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="15" VerticalAlignment="Center">Data import method:</TextBlock>
+
+        <Button Grid.Column="0" Grid.Row="17" Name="saveButt" Content="Save settings" Click="saveButt_Click" Margin="5,0,5,0">
+            <Button.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Saves data you entered into form and uses your prefferences as default on next startup.</TextBlock>
+            </Button.ToolTip>
+        </Button>
+        <Button Grid.Column="0" Grid.Row="18" Name="helpButt" Content="Help" Click="helpButt_Click" Margin="5,0,5,0">
+            <Button.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Opens webpage with manual and author's contact information.</TextBlock>
+            </Button.ToolTip>
+        </Button>
+
+
+        <TextBox Grid.Column="1" Grid.Row="0" Name="listfileBox" TextChanged="listfileBox_TextChanged">
+            <TextBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">For example (listfile) file from MPQ. Use any file with line-break-separated paths to files. In-file comments and other clutter are NOT really supported, however, listfile can contain other than WMO/M2 paths (those get simply filtered out).</TextBlock>
+            </TextBox.ToolTip>
+        </TextBox>
+        <TextBox Grid.Column="1" Grid.Row="1" Name="dbcBox" TextChanged="dbcBox_TextChanged">
+            <TextBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Your GameObjectDisplayInfo.dbc.</TextBlock>
+            </TextBox.ToolTip>
+        </TextBox>
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" Name="bothRadio" Content="M2+WMO" VerticalAlignment="Center" Checked="fileTypeRadio_Checked" Unchecked="fileTypeRadio_Checked">
+                <RadioButton.ToolTip>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">Generate gameobjects from both WMO and M2 models.</TextBlock>
+                </RadioButton.ToolTip>
+            </RadioButton>
+            <RadioButton Grid.Column="1" Name="wmoRadio" Content="WMO only" VerticalAlignment="Center" Checked="fileTypeRadio_Checked" Unchecked="fileTypeRadio_Checked">
+                <RadioButton.ToolTip>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">Generate gameobjects only from WMO models.</TextBlock>
+                </RadioButton.ToolTip>
+            </RadioButton>
+            <RadioButton Grid.Column="2" Name="m2Radio" Content="M2 only" VerticalAlignment="Center" Checked="fileTypeRadio_Checked" Unchecked="fileTypeRadio_Checked">
+                <RadioButton.ToolTip>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">Generate gameobject only from M2 models.</TextBlock>
+                </RadioButton.ToolTip>
+            </RadioButton>
+        </Grid>
+        <TextBox Grid.Column="1" Grid.Row="4" Name="hostBox" TextChanged="hostBox_TextChanged">
+            <TextBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">IP address or domain name of your emu's MySQL server.</TextBlock>
+            </TextBox.ToolTip>
+        </TextBox>
+        <TextBox Grid.Column="1" Grid.Row="5" Name="loginBox" TextChanged="loginBox_TextChanged">
+            <TextBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Login to your MySQL server. You have to have appropriate access rights on database and table provided below.</TextBlock>
+            </TextBox.ToolTip>
+        </TextBox>
+        <PasswordBox Grid.Column="1" Grid.Row="6" Name="passBox" PasswordChanged="passBox_PasswordChanged">
+            <PasswordBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Please, enter your password.</TextBlock>
+            </PasswordBox.ToolTip>
+        </PasswordBox>
+        <TextBox Grid.Column="1" Grid.Row="7" Name="databaseBox" TextChanged="databaseBox_TextChanged">
+            <TextBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Name of your World database. Default is world.</TextBlock>
+            </TextBox.ToolTip>
+        </TextBox>
+        <TextBox Grid.Column="1" Grid.Row="8" Name="tableBox" TextChanged="tableBox_TextChanged">
+            <TextBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Name of your creature_template table. Unless you want to work with some backup/copy, this should be left as default.</TextBlock>
+            </TextBox.ToolTip>
+        </TextBox>
+        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="9" Name="portBox" TextAlignment="Left" Minimum="0" Maximum="65535" ValueChanged="portBox_ValueChanged">
+            <xctk:IntegerUpDown.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Port your MySQL server is running on. 3306 is default.</TextBlock>
+            </xctk:IntegerUpDown.ToolTip>
+        </xctk:IntegerUpDown>
+        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="11" Name="displayIDBox" TextAlignment="Left" Minimum="1" Maximum="16777215" ValueChanged="displayIDBox_ValueChanged">
+            <xctk:IntegerUpDown.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Preset to next free displayID found in your DBC, generated displayIDs will start there. If you want to change this, make sure there won't be any conflicts.</TextBlock>
+            </xctk:IntegerUpDown.ToolTip>
+        </xctk:IntegerUpDown>
+        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="12" Name="entryBox" TextAlignment="Left" Minimum="1" Maximum="16777215" ValueChanged="entryBox_ValueChanged">
+            <xctk:IntegerUpDown.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Final entry of created gameobject will be Base+DisplayID (so if Base is 400000 and displayID is 35123, final entry will be neat 435123). For that reason it is recommended to use value with one more digit than your displayIDs have.</TextBlock>
+            </xctk:IntegerUpDown.ToolTip>
+        </xctk:IntegerUpDown>
+        <TextBox Grid.Column="1" Grid.Row="13" Name="prefixBox" TextChanged="prefixBox_TextChanged">
+            <TextBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">This will be added in front of generated gameobject's name. Name itself will match model name.</TextBlock>
+            </TextBox.ToolTip>
+        </TextBox>
+        <TextBox Grid.Column="1" Grid.Row="14" Name="postfixBox" TextChanged="postfixBox_TextChanged">
+            <TextBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">This will be added behind generated gameobject's name. Name itself will match model name.</TextBlock>
+            </TextBox.ToolTip>
+        </TextBox>
+        <Grid Grid.Column="1" Grid.Row="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" Name="insertRadio" Content="INSERT" VerticalAlignment="Center" Checked="insertRadio_Checked" Unchecked="insertRadio_Checked">
+                <RadioButton.ToolTip>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">In case of collisions, already existing gameobjects will be kept.</TextBlock>
+                </RadioButton.ToolTip>
+            </RadioButton>
+            <RadioButton Grid.Column="1" Name="replaceRadio" Content="REPLACE" VerticalAlignment="Center" Checked="insertRadio_Checked" Unchecked="insertRadio_Checked">
+                <RadioButton.ToolTip>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">In case of collisions, already existing gameobjects will be overwritten by generated ones.</TextBlock>
+                </RadioButton.ToolTip>
+            </RadioButton>
+        </Grid>
+        <CheckBox Grid.Column="1" Grid.Row="17" Name="savePassBox" Content="Save password" VerticalAlignment="Center" Checked="savePassBox_Checked" Unchecked="savePassBox_Checked">
+            <CheckBox.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Used if you click Save settings button. If checked, password will not be saved. WARNING - at the moment, password is kept in PLAIN TEXT ONLY.</TextBlock>
+            </CheckBox.ToolTip>
+        </CheckBox>
+
+        
+        <TextBlock Name="Test" Grid.Column="2" Grid.Row="2"/>
+        <Button Grid.Column="2" Grid.Row="0" Name="listfileButt" Content="Select listfile" Click="listfileButt_Click" Margin="5,0,5,0">
+            <Button.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Choose input listfile by using Open file dialog.</TextBlock>
+            </Button.ToolTip>
+        </Button>
+        <Button Grid.Column="2" Grid.Row="1" Name="dbcButt" Content="Select DBC" Click="dbcButt_Click" Margin="5,0,5,0">
+            <Button.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Choose output DBC by using Open file dialog.</TextBlock>
+            </Button.ToolTip>
+        </Button>
+        <Button Grid.Column="2" Grid.Row="9" Name="testButt" Content="Test connection" Click="testButt_Click" Margin="5,0,5,0">
+            <Button.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Tests wheter database connection information you provided can be used for establishing database connection.</TextBlock>
+            </Button.ToolTip>
+        </Button>
+        <Button Grid.Column="2" Grid.Row="15" Name="collisionButt" Content="Check for collisions" Click="collisionButt_Click" Margin="5,0,5,0">
+            <Button.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Checks wheter all displayIDs and entries which are going to be needed are really free in DBC and in database.</TextBlock>
+            </Button.ToolTip>
+        </Button>
+        <Button Grid.Column="2" Grid.Row="17" Name="generateButt" Content="Generate" Click="generateButt_Click" Grid.RowSpan="2" Margin="5,0,5,0">
+            <Button.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Writes data to both database and DBC. In case error occurs, backup of SQL query is saved.</TextBlock>
+            </Button.ToolTip>
+        </Button>
+
+        <Grid Grid.Column="0" Grid.Row="20" Grid.ColumnSpan="3">
+            <Grid.ToolTip>
+                <TextBlock TextWrapping="Wrap" MaxWidth="300">Use this part only if you want to generate only gameobjects out of displayIDs which already exist. No new displayIDs will be created here.</TextBlock>
+            </Grid.ToolTip>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center">Gobs from displayIDs:</TextBlock>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center">First:</TextBlock>
+            <xctk:IntegerUpDown Grid.Column="2" Name="minDisplayIDBox" TextAlignment="Left" Minimum="1" Maximum="16777215" ValueChanged="minDisplayIDBox_ValueChanged" Margin="5,0,5,0">
+                <xctk:IntegerUpDown.ToolTip>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">This will be the first already existing displayID for which gameobject will be generated.</TextBlock>
+                </xctk:IntegerUpDown.ToolTip>
+            </xctk:IntegerUpDown>
+            <TextBlock Grid.Column="3" VerticalAlignment="Center">Last:</TextBlock>
+            <xctk:IntegerUpDown Grid.Column="4" Name="maxDisplayIDBox" TextAlignment="Left" Minimum="1" Maximum="16777215" ValueChanged="maxDisplayIDBox_ValueChanged" Margin="5,0,5,0">
+                <xctk:IntegerUpDown.ToolTip>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">This will be the last already existing displayID for which gameobject will be generated.</TextBlock>
+                </xctk:IntegerUpDown.ToolTip>
+            </xctk:IntegerUpDown>
+            <Button Grid.Column="5" Name="syncButt" Content="Only displayID > Gob" Click="syncButt_Click" Margin="5,0,5,0"/>
+        </Grid>
+    </Grid>
+</Window>
