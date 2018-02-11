@@ -38,7 +38,7 @@ namespace GobGenerator2.Core
         {
             try
             {
-                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
+                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, Utilities.ToInsecureString(usi.login), Utilities.ToInsecureString(usi.password));
                 dbc.SetDBCFile(usi.dbcPath);
                 HashSet<string> alreadyThere = new HashSet<string>();
                 if (usi.avoidDuplicates)
@@ -68,7 +68,7 @@ namespace GobGenerator2.Core
         {
             try
             {
-                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
+                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, Utilities.ToInsecureString(usi.login), Utilities.ToInsecureString(usi.password));
                 dbc.SetDBCFile(usi.dbcPath);
                 HashSet<string> alreadyThere = new HashSet<string>();
                 if (usi.avoidDuplicates)
@@ -83,7 +83,7 @@ namespace GobGenerator2.Core
 
         public void DisplayIDToDB()
         {
-            sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
+            sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, Utilities.ToInsecureString(usi.login), Utilities.ToInsecureString(usi.password));
             dbc.SetDBCFile(usi.dbcPath);
             sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix),
                 dbc.GetWMODisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix), usi.baseEntry, usi.useInsert);

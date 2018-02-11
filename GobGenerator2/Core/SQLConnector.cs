@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Security;
 using System.Windows;
 
 namespace GobGenerator2.Core
@@ -48,9 +49,9 @@ namespace GobGenerator2.Core
         /// <summary>
         /// Sets connection string and then tests connection.
         /// </summary>
-        public void TestConnection(string host, int port, string database, string table, string login, string password)
+        public void TestConnection(string host, int port, string database, string table, SecureString login, SecureString password)
         {
-            SetConnectionInformation(host, port, database, table, login, password);
+            SetConnectionInformation(host, port, database, table, Utilities.ToInsecureString(login), Utilities.ToInsecureString(password));
             try
             {
                 connection = new MySqlConnection(connectionString);

@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Xml;
 using System.Security.Cryptography;
+using System.Security;
 
 namespace GobGenerator2.Core
 {
@@ -35,8 +36,8 @@ namespace GobGenerator2.Core
         public bool exportWMO = true;
 
         public string host = "127.0.0.1";
-        public string login = "root";
-        public string password = "";
+        public SecureString login = Utilities.ToSecureString("root");
+        public SecureString password = Utilities.ToSecureString("");
         public bool savePassword = false;
         public string database = "world";
         public string table = "gameobject_template";
@@ -74,8 +75,8 @@ namespace GobGenerator2.Core
             Utilities.XmlAddElement(xml, xml.DocumentElement, "exportWMO", exportWMO.ToString(), null);
 
             Utilities.XmlAddElement(xml, xml.DocumentElement, "host", host, null);
-            Utilities.XmlAddElement(xml, xml.DocumentElement, "login", login, null);
-            Utilities.XmlAddElement(xml, xml.DocumentElement, "password", password, null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "login", Utilities.EncryptString(login), null);
+            Utilities.XmlAddElement(xml, xml.DocumentElement, "password", Utilities.EncryptString(password), null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "savePassword", savePassword.ToString(), null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "database", database, null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "table", table, null);
@@ -111,8 +112,7 @@ namespace GobGenerator2.Core
                     exportWMO = xml.GetElementsByTagName("exportWMO")[0].InnerText.ToLower() == "true";
 
                     host = xml.GetElementsByTagName("host")[0].InnerText;
-                    login = xml.GetElementsByTagName("login")[0].InnerText;
-                    LoadPassword();
+                    LoadCredentials();
                     savePassword = xml.GetElementsByTagName("savePassword")[0].InnerText.ToLower() == "true";
                     database = xml.GetElementsByTagName("database")[0].InnerText;
                     table = xml.GetElementsByTagName("table")[0].InnerText;
@@ -148,8 +148,7 @@ namespace GobGenerator2.Core
                 xml.GetElementsByTagName("exportWMO")[0].InnerText = exportWMO.ToString();
 
                 xml.GetElementsByTagName("host")[0].InnerText = host;
-                xml.GetElementsByTagName("login")[0].InnerText = login;
-                SavePassword();
+                SaveCredentials();
                 xml.GetElementsByTagName("savePassword")[0].InnerText = savePassword.ToString();
                 xml.GetElementsByTagName("database")[0].InnerText = database;
                 xml.GetElementsByTagName("table")[0].InnerText = table;
@@ -170,20 +169,24 @@ namespace GobGenerator2.Core
         /// <summary>
         /// Encryption NIY.
         /// </summary>
-        private void LoadPassword()
+        private void LoadCredentials()
         {
-            password = xml.GetElementsByTagName("password")[0].InnerText;
+            login = Utilities.DecryptString(xml.GetElementsByTagName("login")[0].InnerText);
+            password = Utilities.DecryptString(xml.GetElementsByTagName("password")[0].InnerText);
         }
 
         /// <summary>
         /// Encryption NIY.
         /// </summary>
-        private void SavePassword()
+        private void SaveCredentials()
         {
             if (savePassword)
-                xml.GetElementsByTagName("password")[0].InnerText = password;
+            {
+                xml.GetElementsByTagName("password")[0].InnerText = Utilities.EncryptString(password);
+            }
             else
                 xml.GetElementsByTagName("password")[0].InnerText = "";
+            xml.GetElementsByTagName("login")[0].InnerText = Utilities.EncryptString(login);
         }
     }
 }

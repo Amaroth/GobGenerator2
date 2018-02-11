@@ -88,12 +88,12 @@ namespace GobGenerator2.GUI
 
         private void loginBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            usi.login = loginBox.Text;
+            usi.login = Utilities.ToSecureString(loginBox.Text);
         }
 
         private void passBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            usi.password = passBox.Password;
+            usi.password = Utilities.ToSecureString(passBox.Password);
         }
 
         private void databaseBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -149,8 +149,8 @@ namespace GobGenerator2.GUI
                 wmoRadio.IsChecked = true;
 
             hostBox.Text = usi.host;
-            loginBox.Text = usi.login;
-            passBox.Password = usi.password;
+            loginBox.Text = Utilities.ToInsecureString(usi.login);
+            passBox.Password = Utilities.ToInsecureString(usi.password);
             savePassBox.IsChecked = usi.savePassword;
             databaseBox.Text = usi.database;
             tableBox.Text = usi.table;
