@@ -57,7 +57,11 @@ namespace GobGenerator2.Core
 
         public void CreateDisplayIDs(HashSet<string> modelPaths)
         {
-
+            using (StreamWriter sw = new StreamWriter("test.txt"))
+            {
+                foreach (string s in modelPaths)
+                    ;
+            }
         }
     }
 }
