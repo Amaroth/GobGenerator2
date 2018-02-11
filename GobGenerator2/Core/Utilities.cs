@@ -15,5 +15,10 @@ namespace GobGenerator2.Core
             newNode.InnerText = innerText;
             parent.AppendChild(newNode);
         }
+
+        public static string GetModelName(string modelPath)
+        {
+            return modelPath;
+        }
     }
 }

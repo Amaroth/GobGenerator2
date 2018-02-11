@@ -127,6 +127,24 @@ namespace GobGenerator2.Core
             return dbc.Rows.NextKey;
         }
 
+        public List<Tuple<int, string>> GetM2DisplayIDsFromRange(int start, int end)
+        {
+            List<Tuple<int, string>> result = new List<Tuple<int, string>>();
+            foreach (var row in dbc.Rows)
+                if (row.ID >= start && row.ID <= end && !row.ModelName.ToLower().EndsWith(".wmo"))
+                    result.Add(new Tuple<int, string>(row.ID, Utilities.GetModelName(row.ModelName)));
+            return result;
+        }
+
+        public List<Tuple<int, string>> GetWMODisplayIDsFromRange(int start, int end)
+        {
+            List<Tuple<int, string>> result = new List<Tuple<int, string>>();
+            foreach (var row in dbc.Rows)
+                if (row.ID >= start && row.ID <= end && row.ModelName.ToLower().EndsWith(".wmo"))
+                    result.Add(new Tuple<int, string>(row.ID, Utilities.GetModelName(row.ModelName)));
+            return result;
+        }
+
         public int AmountInRange(int start, int end)
         {
             if (start > end)

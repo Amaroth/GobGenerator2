@@ -49,38 +49,46 @@ namespace GobGenerator2.Core
                     alreadyThere = dbc.AlreadyThere();
 
                 int amountForImport = lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, alreadyThere).Count;
+                if (amountForImport > 0)
+                {
+                    int firstDisplayID = usi.startDisplayID;
+                    int lastDisplayID = firstDisplayID + amountForImport - 1;
 
-                int firstDisplayID = usi.startDisplayID;
-                int lastDisplayID = firstDisplayID + amountForImport - 1;
+                    int firstEntry = usi.baseEntry + firstDisplayID;
+                    int lastEntry = firstEntry + amountForImport - 1;
 
-                int firstEntry = usi.baseEntry + firstDisplayID;
-                int lastEntry = firstEntry + amountForImport - 1;
-
-                MessageBox.Show(string.Format("Filtered amount of files in input listfile: {0}.\n\nFound {1} collisions on displayIDs {2} - {3} in DBC.\nFound {4} collisions on entries {5} - {6} in database.",
-                    amountForImport,
-                    dbc.AmountInRange(firstDisplayID, lastDisplayID), firstDisplayID, lastDisplayID,
-                    sql.AmountInRange(firstEntry, lastEntry), firstEntry, lastEntry));
+                    MessageBox.Show(string.Format("Filtered amount of files in input listfile: {0}.\n\nFound {1} collisions on displayIDs {2} - {3} in DBC.\nFound {4} collisions on entries {5} - {6} in database.",
+                        amountForImport,
+                        dbc.AmountInRange(firstDisplayID, lastDisplayID), firstDisplayID, lastDisplayID,
+                        sql.AmountInRange(firstEntry, lastEntry), firstEntry, lastEntry));
+                }
+                else
+                    MessageBox.Show("Filtered amount of files in input listfile is 0. There is nothing to generate, and thus no collisions.");
             }
             catch (Exception e) { MessageBox.Show("Couldn't check for collisions, following error occured.:\n\n" + e.Message); }
         }
 
         public void Generate()
         {
-            //try
+            try
             {
                 sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
                 dbc.SetDBCFile(usi.dbcPath);
                 HashSet<string> alreadyThere = new HashSet<string>();
                 if (usi.avoidDuplicates)
                     alreadyThere = dbc.AlreadyThere();
-                dbc.CreateDisplayIDs(lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, alreadyThere), usi.startDisplayID);
+                var listfile = lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, alreadyThere);
+                dbc.CreateDisplayIDs(listfile, usi.startDisplayID);
+                sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1),
+                    dbc.GetWMODisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1), usi.baseEntry, usi.useInsert);
             }
-            //catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
+            catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
         }
 
-        public void OnlyDisplayToDB()
+        public void DisplayIDToDB()
         {
-
+            sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
+            dbc.SetDBCFile(usi.dbcPath);
         }
 
         public void SaveUserSettings()

@@ -39,7 +39,7 @@ namespace GobGenerator2.Core
             displayIDColName = xml.GetElementsByTagName("DisplayID")[0].InnerText;
             nameColName = xml.GetElementsByTagName("Name")[0].InnerText;
 
-            foreach (XmlNode element in xml.GetElementsByTagName("DefaultValues"))
+            foreach (XmlNode element in xml.GetElementsByTagName("DefaultValues")[0].ChildNodes)
                 defaultValues.Add(element.Name, element.InnerText);
         }
     }

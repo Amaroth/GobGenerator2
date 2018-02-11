@@ -170,7 +170,7 @@ namespace GobGenerator2.GUI
 
         private void syncButt_Click(object sender, RoutedEventArgs e)
         {
-            core.OnlyDisplayToDB();
+            core.DisplayIDToDB();
         }
 
         private void portBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

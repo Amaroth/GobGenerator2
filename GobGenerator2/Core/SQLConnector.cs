@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,6 +84,77 @@ namespace GobGenerator2.Core
             }
             catch (Exception e) { throw e; }
             return 0;
+        }
+
+        public void CreateGameobjects(List<Tuple<int, string>> m2DisplayIDs, List<Tuple<int, string>> wmoDisplayIDs, int baseEntry, bool useInsert)
+        {
+            if ((m2DisplayIDs.Count > 0 || wmoDisplayIDs.Count > 0) && baseEntry > 0)
+            {
+                connection = new MySqlConnection(connectionString);
+                connection.Open();
+
+
+
+                string query = "START TRANSACTION;\n";
+
+                if (useInsert)
+                    query += "INSERT";
+                else
+                    query += "REPLACE";
+
+                string m2Cols = string.Format("`{0}`, `{1}`, `{2}`", m2Config.entryColName, m2Config.displayIDColName, m2Config.nameColName);
+                foreach (var col in m2Config.defaultValues)
+                    m2Cols += ", `" + col.Key + "`";
+
+                query += string.Format(" INTO `{0}` ({1}) VALUES\n", table, m2Cols);
+                bool firstM = true;
+                foreach (var displayID in m2DisplayIDs)
+                {
+                    if (!firstM)
+                        query += ",\n";
+                    query += string.Format("({0}, {1}, \"{2}\"", baseEntry + displayID.Item1, displayID.Item1, displayID.Item2);
+                    foreach (var col in m2Config.defaultValues)
+                        query += ", \"" + col.Value + "\"";
+                    query += ")";
+                    firstM = false;
+                }
+                query += ";\n";
+
+                if (useInsert)
+                    query += "INSERT";
+                else
+                    query += "REPLACE";
+
+                string wmoCols = string.Format("`{0}`, `{1}`, `{2}`", wmoConfig.entryColName, wmoConfig.displayIDColName, wmoConfig.nameColName);
+                foreach (var col in wmoConfig.defaultValues)
+                    wmoCols += ", `" + col.Key + "`";
+
+                query += string.Format(" INTO `{0}` ({1}) VALUES\n", table, wmoCols);
+                bool firstW = true;
+                foreach (var displayID in wmoDisplayIDs)
+                {
+                    if (!firstW)
+                        query += ",\n";
+                    query += string.Format("({0}, {1}, \"{2}\"", baseEntry + displayID.Item1, displayID.Item1, displayID.Item2);
+                    foreach (var col in wmoConfig.defaultValues)
+                        query += ", \"" + col.Value + "\"";
+                    query += ")";
+                    firstW = false;
+                }
+                query += ";\n";
+
+                query += "COMMIT;";
+
+                /*using (var sw = new StreamWriter("test.txt"))
+                {
+                    sw.WriteLine(query);
+                }*/
+
+                var command = new MySqlCommand(query, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
         }
     }
 }
