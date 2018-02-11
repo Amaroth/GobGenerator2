@@ -17,6 +17,7 @@ namespace GobGenerator2.Core
         private string host;
         private int port;
         private string database;
+        private string table;
         private string login;
         private string password;
 
@@ -36,11 +37,12 @@ namespace GobGenerator2.Core
             catch (Exception e) { throw new Exception("Error occured while attempting to read and parse WMOSQLConfig.xml.\n\n" + e.ToString()); }
         }
 
-        public void SetConnectionInformation(string host, int port, string database, string login, string password)
+        public void SetConnectionInformation(string host, int port, string database, string table, string login, string password)
         {
             this.host = host;
             this.port = port;
             this.database = database;
+            this.table = table;
             this.login = login;
             this.password = password;
             connectionString = string.Format("Server={0}; Port={1}; Database={2}; Uid={3}; Pwd={4}; SslMode=none;", host, port, database, login, password);
@@ -49,9 +51,9 @@ namespace GobGenerator2.Core
         /// <summary>
         /// Sets connection string and then tests connection.
         /// </summary>
-        public void TestConnection(string host, int port, string database, string login, string password)
+        public void TestConnection(string host, int port, string database, string table, string login, string password)
         {
-            SetConnectionInformation(host, port, database, login, password);
+            SetConnectionInformation(host, port, database, table, login, password);
             try
             {
                 connection = new MySqlConnection(connectionString);
@@ -66,6 +68,20 @@ namespace GobGenerator2.Core
         {
             if (start > end)
                 throw new ArgumentException(string.Format("Start entry value ({0}) has to be lower or equal to end value ({1}).", start, end));
+            
+            try
+            {
+                connection = new MySqlConnection(connectionString);
+                connection.Open();
+                var query = new MySqlCommand(string.Format("SELECT COUNT({0}) FROM {1} WHERE {0} BETWEEN {2} AND {3};", m2Config.entryColName, table, start, end), connection);
+                using (var r = query.ExecuteReader())
+                {
+                    if (r.Read())
+                        return Convert.ToInt32(r[0]);
+                }
+                connection.Close();
+            }
+            catch (Exception e) { throw e; }
             return 0;
         }
     }

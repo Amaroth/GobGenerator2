@@ -35,14 +35,14 @@ namespace GobGenerator2.Core
 
         public void TestConnection()
         {
-            sql.TestConnection(usi.host, usi.port, usi.database, usi.login, usi.password);
+            sql.TestConnection(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
         }
 
         public void CheckForCollisions()
         {
             try
             {
-                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.login, usi.password);
+                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
                 dbc.SetDBCFile(usi.dbcPath);
                 HashSet<string> alreadyThere = new HashSet<string>();
                 if (usi.avoidDuplicates)
@@ -68,7 +68,7 @@ namespace GobGenerator2.Core
         {
             try
             {
-                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.login, usi.password);
+                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
                 dbc.SetDBCFile(usi.dbcPath);
                 HashSet<string> alreadyThere = new HashSet<string>();
                 if (usi.avoidDuplicates)
