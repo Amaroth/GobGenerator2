@@ -13,7 +13,7 @@ namespace GobGenerator2.Core
     {
         private HashSet<string> filePaths;
 
-        public void ReadListfile(string filePath, bool exportM2, bool exportWMO, bool avoidDuplicates, HashSet<string> alreadyThere)
+        public HashSet<string> ReadListfile(string filePath, bool exportM2, bool exportWMO, HashSet<string> alreadyThere)
         {
             filePaths = new HashSet<string>();
             try
@@ -25,11 +25,14 @@ namespace GobGenerator2.Core
                 while ((line = sr.ReadLine()) != null)
                 {
                     line = line.ToLower();
-                    if (!alreadyThere.Contains(line) || !avoidDuplicates)
+                    if (!alreadyThere.Contains(line))
                     {
-                        if (exportM2 && line.EndsWith(".m2"))
-                            filePaths.Add(line);
-                        else if (exportWMO && line.EndsWith(".wmo") && !reg.IsMatch(line))
+                        if (line.EndsWith(".wmo"))
+                        {
+                            if (exportWMO && !reg.IsMatch(line))
+                                filePaths.Add(line);
+                        }
+                        else if (exportM2)
                             filePaths.Add(line);
                     }
                 }
@@ -37,8 +40,9 @@ namespace GobGenerator2.Core
             catch (Exception e)
             {
                 filePaths = new HashSet<string>();
-                throw new Exception("Error while attempting to read " + filePath);
+                throw new Exception("Error while attempting to read " + filePath + "\n\n" + e.ToString());
             }
+            return filePaths;
         }
     }
 }

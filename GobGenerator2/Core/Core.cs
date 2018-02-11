@@ -51,7 +51,7 @@ namespace GobGenerator2.Core
                 HashSet<string> alreadyThere = new HashSet<string>();
                 if (usi.avoidDuplicates)
                     alreadyThere = dbc.AlreadyThere(usi.dbcPath);
-                lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, usi.avoidDuplicates, alreadyThere);
+                lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, alreadyThere);
             }
             catch (Exception e) { MessageBox.Show(e.ToString()); }
         }

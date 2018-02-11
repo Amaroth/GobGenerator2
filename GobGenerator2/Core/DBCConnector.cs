@@ -23,12 +23,12 @@ namespace GobGenerator2.Core
             {
                 m2Config = new DBCDataConfig("M2DBCConfig.xml");
             }
-            catch { throw new Exception("Error occured while attempting to read and parse M2DBCConfig.xml."); }
+            catch (Exception e) { throw new Exception("Error occured while attempting to read and parse M2DBCConfig.xml.\n\n" + e.ToString()); }
             try
             {
                 wmoConfig = new DBCDataConfig("WMODBCConfig.xml");
             }
-            catch { throw new Exception("Error occured while attempting to read and parse WMODBCConfig.xml."); }
+            catch (Exception e) { throw new Exception("Error occured while attempting to read and parse WMODBCConfig.xml.\n\n" + e.ToString()); }
         }
 
         public HashSet<string> AlreadyThere(string filePath)
@@ -41,17 +41,23 @@ namespace GobGenerator2.Core
                     var dbc = DBReader.Read<GameObjectDisplayInfo>(@"GameObjectDisplayInfo.dbc");
                     foreach (var row in dbc.Rows)
                     {
-                        if (row.ModelName.ToLower().EndsWith(".wmo"))
-                            result.Add(row.ModelName.ToLower());
-                        else if (row.ModelName.Length > 3 && row.ModelName.ToLower().EndsWith(".mdx"))
+                        
+                        if (row.ModelName.Length > 3 && row.ModelName.ToLower().EndsWith(".mdx"))
                             result.Add(row.ModelName.ToLower().Substring(0, row.ModelName.Length - 3) + "m2");
+                        else
+                            result.Add(row.ModelName.ToLower());
                     }
                 }
-                catch{ throw new Exception("Error while attempting to read DBC file."); }
+                catch (Exception e) { throw new Exception("Error while attempting to read DBC file.\n\n" + e.ToString()); }
             }
             else
                 MessageBox.Show("Provided DBC file not found.");
             return result;
+        }
+
+        public void CreateDisplayIDs(HashSet<string> modelPaths)
+        {
+
         }
     }
 }

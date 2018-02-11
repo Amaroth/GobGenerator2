@@ -29,5 +29,10 @@ namespace GobGenerator2.Core
                 connection = null;
             }
         }
+
+        public void CreateGameObjects(List<int> displayIDs)
+        {
+
+        }
     }
 }
