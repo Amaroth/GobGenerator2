@@ -3,7 +3,6 @@ using System.Text;
 using System.IO;
 using System.Windows;
 using System.Xml;
-using System.Security.Cryptography;
 using System.Security;
 
 namespace GobGenerator2.Core
@@ -54,7 +53,7 @@ namespace GobGenerator2.Core
         public int maxDisplayID = 16777215;
 
         /// <summary>
-        /// Generates XML with default startup settings and uses it.
+        /// Generates default user settings XML.
         /// </summary>
         private void DefaultSettings()
         {
@@ -91,7 +90,7 @@ namespace GobGenerator2.Core
         }
 
         /// <summary>
-        /// Loads saved settings from UserSettings.xml. If file is not found default values are used.
+        /// Loads saved user settings from UserSettings.xml. If file is not found default values are used.
         /// </summary>
         private void LoadSettings()
         {
@@ -167,7 +166,7 @@ namespace GobGenerator2.Core
         }
 
         /// <summary>
-        /// Encryption NIY.
+        /// Gets encrypted user credentials from XML.
         /// </summary>
         private void LoadCredentials()
         {
@@ -176,7 +175,7 @@ namespace GobGenerator2.Core
         }
 
         /// <summary>
-        /// Encryption NIY.
+        /// Puts encrypted user credentials into XML.
         /// </summary>
         private void SaveCredentials()
         {

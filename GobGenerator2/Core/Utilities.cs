@@ -2,11 +2,20 @@
 using System.Text.RegularExpressions;
 using System;
 using System.Security;
+using System.IO;
 
 namespace GobGenerator2.Core
 {
     class Utilities
     {
+        /// <summary>
+        /// Adds a new element as child under provided node in give xml.
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="parent"></param>
+        /// <param name="name"></param>
+        /// <param name="innerText"></param>
+        /// <param name="comment"></param>
         public static void XmlAddElement(XmlDocument xml, XmlNode parent, string name, string innerText, string comment)
         {
             XmlNode newNode = xml.CreateElement(name);
@@ -19,17 +28,22 @@ namespace GobGenerator2.Core
             parent.AppendChild(newNode);
         }
 
+        /// <summary>
+        /// Turns model's path into lowercase name (enforced M2 extension for nonWMO).
+        /// </summary>
+        /// <param name="modelPath"></param>
+        /// <returns></returns>
         public static string GetModelName(string modelPath)
         {
-            string fileName;
-            if (modelPath.LastIndexOf('\\') < 0)
-                fileName = Regex.Escape(modelPath.ToLower());
-            else
-                fileName = Regex.Escape(modelPath.Substring(modelPath.LastIndexOf('\\') + 1).ToLower());
-            fileName = Regex.Replace(fileName, ".mdx", ".m2");
-            return Regex.Replace(fileName, ".mdl", ".m2");
+            string fileName = modelPath.ToLower();
+            if (fileName.LastIndexOf('\\') >= 0)
+                fileName = fileName.Substring(modelPath.LastIndexOf('\\') + 1);
+            if (!fileName.EndsWith(".wmo"))
+                fileName = Path.ChangeExtension(fileName, ".m2");
+            return fileName;
         }
 
+        #region Nothing to see here.
         static byte[] entropy = System.Text.Encoding.Unicode.GetBytes("Wizzard on a Lizzard in a Blizzard Entertainment");
 
         public static string EncryptString(SecureString input)
@@ -82,5 +96,6 @@ namespace GobGenerator2.Core
             }
             return returnValue;
         }
+        #endregion
     }
 }
