@@ -53,7 +53,7 @@ namespace GobGenerator2.Core
                     alreadyThere = dbc.AlreadyThere(usi.dbcPath);
                 lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, usi.avoidDuplicates, alreadyThere);
             }
-            catch { }
+            catch (Exception e) { MessageBox.Show(e.ToString()); }
         }
 
         public void OnlyDisplayToDB()

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file contains default values for generated WMO GameObjectDisplayInfo.dbc records - displayIDs. Change only if you know what you are doing.-->
+<M2DBCConfig>
+  <SoundStand>0</SoundStand>
+  <SoundOpen>0</SoundOpen>
+  <SoundLoop>0</SoundLoop>
+  <SoundClose>0</SoundClose>
+  <SoundDestroy>0</SoundDestroy>
+  <SoundOpened>0</SoundOpened>
+  <SoundCustom0>0</SoundCustom0>
+  <SoundCustom1>0</SoundCustom1>
+  <SoundCustom2>0</SoundCustom2>
+  <SoundCustom3>0</SoundCustom3>
+  <GeoBoxMinX>0</GeoBoxMinX>
+  <GeoBoxMinY>0</GeoBoxMinY>
+  <GeoBoxMinZ>0</GeoBoxMinZ>
+  <GeoBoxMaxX>0</GeoBoxMaxX>
+  <GeoBoxMaxY>0</GeoBoxMaxY>
+  <GeoBoxMaxZ>0</GeoBoxMaxZ>
+  <ObjectEffectPackageID>0</ObjectEffectPackageID>
+</M2DBCConfig>
