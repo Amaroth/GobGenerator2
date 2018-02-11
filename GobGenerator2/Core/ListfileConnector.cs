@@ -32,7 +32,7 @@ namespace GobGenerator2.Core
                             if (exportWMO && !reg.IsMatch(line))
                                 filePaths.Add(line);
                         }
-                        else if (exportM2)
+                        else if (exportM2 && (line.EndsWith(".m2") || line.EndsWith(".mdl") || line.EndsWith(".mdx")))
                             filePaths.Add(line);
                     }
                 }

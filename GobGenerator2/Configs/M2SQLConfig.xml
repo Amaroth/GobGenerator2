@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file contains default values for generated M2 gameobject, and column association definitions. Compatible with TC2 Release 335.63. Change only if tool isn't compatible with your emu/TC2 version.-->
+<M2SQLConfig>
+  <ColAssociations>
+    <Entry>entry</Entry>
+    <DisplayID>displayId</DisplayID>
+    <Name>name</Name>
+  </ColAssociations>
+
+  <DefaultValues>
+    <type>5</type>
+  </DefaultValues>
+</M2SQLConfig>

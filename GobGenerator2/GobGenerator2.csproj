@@ -85,6 +85,7 @@
     <Compile Include="Core\DBCConnector.cs" />
     <Compile Include="Core\ListfileConnector.cs" />
     <Compile Include="Core\SQLConnector.cs" />
+    <Compile Include="Core\SQLDataConfig.cs" />
     <Compile Include="Core\UserSettings.cs" />
     <Compile Include="Core\Utilities.cs" />
     <Page Include="GUI\MainWindow.xaml">
@@ -127,7 +128,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Configs\M2SQLConfig.xml" />
+    <Resource Include="Configs\WMOSQLConfig.xml" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Configs\M2DBCConfig.xml" />
     <Resource Include="Configs\WMODBCConfig.xml" />

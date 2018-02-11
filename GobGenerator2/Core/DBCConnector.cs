@@ -55,13 +55,24 @@ namespace GobGenerator2.Core
             return result;
         }
 
-        public void CreateDisplayIDs(HashSet<string> modelPaths)
+        public void CreateDisplayIDs(HashSet<string> modelPaths, int start)
         {
             using (StreamWriter sw = new StreamWriter("test.txt"))
             {
                 foreach (string s in modelPaths)
-                    ;
+                {
+                    if (s.EndsWith(".wmo"))
+                        sw.WriteLine("{0}, {1}, {2}", start, s, wmoConfig.SoundStand);
+                    else
+                        sw.WriteLine("{0}, {1}, {2}", start, s, m2Config.SoundStand);
+                    start++;
+                }
             }
+        }
+
+        public int AmountInRange(int start, int end)
+        {
+            return 0;
         }
     }
 }
