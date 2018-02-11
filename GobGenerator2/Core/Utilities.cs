@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using System.Text.RegularExpressions;
 
 namespace GobGenerator2.Core
 {
@@ -18,7 +19,13 @@ namespace GobGenerator2.Core
 
         public static string GetModelName(string modelPath)
         {
-            return modelPath;
+            string fileName;
+            if (modelPath.LastIndexOf('\\') < 0)
+                fileName = Regex.Escape(modelPath.ToLower());
+            else
+                fileName = Regex.Escape(modelPath.Substring(modelPath.LastIndexOf('\\') + 1).ToLower());
+            fileName = Regex.Replace(fileName, ".mdx", ".m2");
+            return Regex.Replace(fileName, ".mdl", ".m2");
         }
     }
 }

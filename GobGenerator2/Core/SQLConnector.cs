@@ -88,15 +88,14 @@ namespace GobGenerator2.Core
 
         public void CreateGameobjects(List<Tuple<int, string>> m2DisplayIDs, List<Tuple<int, string>> wmoDisplayIDs, int baseEntry, bool useInsert)
         {
-            if ((m2DisplayIDs.Count > 0 || wmoDisplayIDs.Count > 0) && baseEntry > 0)
+            connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+
+
+            string query = "START TRANSACTION;\n";
+            if (m2DisplayIDs.Count > 0)
             {
-                connection = new MySqlConnection(connectionString);
-                connection.Open();
-
-
-
-                string query = "START TRANSACTION;\n";
-
                 if (useInsert)
                     query += "INSERT";
                 else
@@ -119,7 +118,9 @@ namespace GobGenerator2.Core
                     firstM = false;
                 }
                 query += ";\n";
-
+            }
+            if (wmoDisplayIDs.Count > 0)
+            {
                 if (useInsert)
                     query += "INSERT";
                 else
@@ -142,19 +143,16 @@ namespace GobGenerator2.Core
                     firstW = false;
                 }
                 query += ";\n";
-
-                query += "COMMIT;";
-
-                /*using (var sw = new StreamWriter("test.txt"))
-                {
-                    sw.WriteLine(query);
-                }*/
-
-                var command = new MySqlCommand(query, connection);
-                command.ExecuteNonQuery();
-
-                connection.Close();
             }
+
+            query += "COMMIT;";
+
+
+
+            var command = new MySqlCommand(query, connection);
+            command.ExecuteNonQuery();
+
+            connection.Close();
         }
     }
 }

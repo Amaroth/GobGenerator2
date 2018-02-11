@@ -79,8 +79,8 @@ namespace GobGenerator2.Core
                     alreadyThere = dbc.AlreadyThere();
                 var listfile = lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, alreadyThere);
                 dbc.CreateDisplayIDs(listfile, usi.startDisplayID);
-                sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1),
-                    dbc.GetWMODisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1), usi.baseEntry, usi.useInsert);
+                sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1, usi.prefix, usi.postfix),
+                    dbc.GetWMODisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1, usi.prefix, usi.postfix), usi.baseEntry, usi.useInsert);
             }
             catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
         }
@@ -89,6 +89,8 @@ namespace GobGenerator2.Core
         {
             sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
             dbc.SetDBCFile(usi.dbcPath);
+            sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix),
+                dbc.GetWMODisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix), usi.baseEntry, usi.useInsert);
         }
 
         public void SaveUserSettings()
