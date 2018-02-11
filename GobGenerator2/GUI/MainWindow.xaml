@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GobGenerator2.GUI"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="GobDisplayGenerator 2.0"
+        Title="GobDisplayGenerator 2.0 dev0"
         Height="450" Width="700" MinHeight="450" MinWidth="680"
         AllowDrop="True" Drop="Window_Drop">
     <Grid Margin="10,0,5,5">
@@ -231,6 +231,5 @@
             </xctk:IntegerUpDown>
             <Button Grid.Column="5" Name="syncButt" Content="Only displayID > Gob" Click="syncButt_Click" Margin="5,0,5,0"/>
         </Grid>
-        <Button Name="TestButt" Content="TestButt" Grid.Column="1" Grid.Row="18" Click="TestButt_Click_1"/>
     </Grid>
 </Window>

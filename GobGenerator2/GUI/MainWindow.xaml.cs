@@ -197,11 +197,6 @@ namespace GobGenerator2.GUI
             usi.maxDisplayID = (int)maxDisplayIDBox.Value;
         }
 
-        private void TestButt_Click_1(object sender, RoutedEventArgs e)
-        {
-            core.Test();
-        }
-
         private void avoidDuplicatesBox_Checked(object sender, RoutedEventArgs e)
         {
             usi.avoidDuplicates = (bool)avoidDuplicatesBox.IsChecked;

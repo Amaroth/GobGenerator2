@@ -9,13 +9,17 @@ using WDBXLib.Definitions.WotLK;
 using System.Windows;
 using System.IO;
 using System.Xml;
+using WDBXLib.Storage;
 
 namespace GobGenerator2.Core
 {
     class DBCConnector
     {
-        DBCDataConfig m2Config;
-        DBCDataConfig wmoConfig;
+        private DBCDataConfig m2Config;
+        private DBCDataConfig wmoConfig;
+        private DBEntry<GameObjectDisplayInfo> dbc;
+
+        private string filePath;
 
         public DBCConnector()
         {
@@ -31,27 +35,27 @@ namespace GobGenerator2.Core
             catch (Exception e) { throw new Exception("Error occured while attempting to read and parse WMODBCConfig.xml.\n\n" + e.ToString()); }
         }
 
-        public HashSet<string> AlreadyThere(string filePath)
+        public void SetDBCFile(string filePath)
+        {
+            this.filePath = filePath;
+            dbc = DBReader.Read<GameObjectDisplayInfo>(filePath);
+        }
+
+        public HashSet<string> AlreadyThere()
         {
             HashSet<string> result = new HashSet<string>();
-            if (File.Exists(filePath))
+            try
             {
-                try
+                foreach (var row in dbc.Rows)
                 {
-                    var dbc = DBReader.Read<GameObjectDisplayInfo>(@"GameObjectDisplayInfo.dbc");
-                    foreach (var row in dbc.Rows)
-                    {
                         
-                        if (row.ModelName.Length > 3 && row.ModelName.ToLower().EndsWith(".mdx"))
-                            result.Add(row.ModelName.ToLower().Substring(0, row.ModelName.Length - 3) + "m2");
-                        else
-                            result.Add(row.ModelName.ToLower());
-                    }
+                    if (row.ModelName.Length > 3 && row.ModelName.ToLower().EndsWith(".mdx"))
+                        result.Add(row.ModelName.ToLower().Substring(0, row.ModelName.Length - 3) + "m2");
+                    else
+                        result.Add(row.ModelName.ToLower());
                 }
-                catch (Exception e) { throw new Exception("Error while attempting to read DBC file.\n\n" + e.ToString()); }
             }
-            else
-                MessageBox.Show("Provided DBC file not found.");
+            catch (Exception e) { throw new Exception("Error while attempting to read DBC file.\n\n" + e.ToString()); }
             return result;
         }
 
@@ -72,7 +76,13 @@ namespace GobGenerator2.Core
 
         public int AmountInRange(int start, int end)
         {
-            return 0;
+            if (start > end)
+                throw new ArgumentException(string.Format("Start displayID value ({0}) has to be lower or equal to end value ({1}).", start, end));
+            int c = 0;
+            foreach (var row in dbc.Rows)
+                if (row.ID >= start && row.ID <= end)
+                    c++;
+            return c;
         }
     }
 }

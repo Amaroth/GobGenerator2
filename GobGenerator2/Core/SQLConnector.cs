@@ -10,9 +10,9 @@ namespace GobGenerator2.Core
 {
     class SQLConnector
     {
-        MySqlConnection connection;
-        SQLDataConfig m2Config;
-        SQLDataConfig wmoConfig;
+        private SQLDataConfig m2Config;
+        private SQLDataConfig wmoConfig;
+        private MySqlConnection connection;
 
         private string host;
         private int port;
@@ -36,7 +36,7 @@ namespace GobGenerator2.Core
             catch (Exception e) { throw new Exception("Error occured while attempting to read and parse WMOSQLConfig.xml.\n\n" + e.ToString()); }
         }
 
-        private void SetConnectionInformation(string host, int port, string database, string login, string password)
+        public void SetConnectionInformation(string host, int port, string database, string login, string password)
         {
             this.host = host;
             this.port = port;
@@ -47,10 +47,11 @@ namespace GobGenerator2.Core
         }
 
         /// <summary>
-        /// Tests connection with current connection string available.
+        /// Sets connection string and then tests connection.
         /// </summary>
-        public void TestConnection()
+        public void TestConnection(string host, int port, string database, string login, string password)
         {
+            SetConnectionInformation(host, port, database, login, password);
             try
             {
                 connection = new MySqlConnection(connectionString);
@@ -61,17 +62,10 @@ namespace GobGenerator2.Core
             catch (Exception e) { throw new Exception("Error occured while establishing database connection.\n\n" + e.Message); }
         }
 
-        /// <summary>
-        /// Sets connection string and then tests connection.
-        /// </summary>
-        public void TestConnection(string host, int port, string database, string login, string password)
-        {
-            SetConnectionInformation(host, port, database, login, password);
-            TestConnection();
-        }
-
         public int AmountInRange(int start, int end)
         {
+            if (start > end)
+                throw new ArgumentException(string.Format("Start entry value ({0}) has to be lower or equal to end value ({1}).", start, end));
             return 0;
         }
     }
