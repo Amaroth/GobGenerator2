@@ -66,7 +66,7 @@ namespace GobGenerator2.Core
 
         public void Generate()
         {
-            try
+            //try
             {
                 sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
                 dbc.SetDBCFile(usi.dbcPath);
@@ -75,7 +75,7 @@ namespace GobGenerator2.Core
                     alreadyThere = dbc.AlreadyThere();
                 dbc.CreateDisplayIDs(lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, alreadyThere), usi.startDisplayID);
             }
-            catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
+            //catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
         }
 
         public void OnlyDisplayToDB()

@@ -62,19 +62,64 @@ namespace GobGenerator2.Core
             return result;
         }
 
-        public void CreateDisplayIDs(HashSet<string> modelPaths, int start)
+        public void CreateDisplayIDs(HashSet<string> modelPaths, int displayID)
         {
-            using (StreamWriter sw = new StreamWriter("test.txt"))
+            if (AmountInRange(displayID, displayID + modelPaths.Count - 1) == 0)
             {
                 foreach (string s in modelPaths)
                 {
+                    var newRecord = new GameObjectDisplayInfo();
+                    newRecord.ID = displayID;
+                    newRecord.ModelName = s;
+                    newRecord.Sound = new int[10];
                     if (s.EndsWith(".wmo"))
-                        sw.WriteLine("{0}, {1}, {2}", start, s, wmoConfig.SoundStand);
+                    {
+                        newRecord.Sound[0] = wmoConfig.SoundStand;
+                        newRecord.Sound[1] = wmoConfig.SoundOpen;
+                        newRecord.Sound[2] = wmoConfig.SoundLoop;
+                        newRecord.Sound[3] = wmoConfig.SoundClose;
+                        newRecord.Sound[4] = wmoConfig.SoundDestroy;
+                        newRecord.Sound[5] = wmoConfig.SoundOpened;
+                        newRecord.Sound[6] = wmoConfig.SoundCustom0;
+                        newRecord.Sound[7] = wmoConfig.SoundCustom1;
+                        newRecord.Sound[8] = wmoConfig.SoundCustom2;
+                        newRecord.Sound[9] = wmoConfig.SoundCustom3;
+                        newRecord.GeoBoxMinX = wmoConfig.GeoBoxMinX;
+                        newRecord.GeoBoxMinY = wmoConfig.GeoBoxMinY;
+                        newRecord.GeoBoxMinZ = wmoConfig.GeoBoxMinZ;
+                        newRecord.GeoBoxMaxX = wmoConfig.GeoBoxMaxX;
+                        newRecord.GeoBoxMaxY = wmoConfig.GeoBoxMaxY;
+                        newRecord.GeoBoxMaxZ = wmoConfig.GeoBoxMaxZ;
+                        newRecord.ObjectEffectPackageID = wmoConfig.ObjectEffectPackageID;
+                    }
                     else
-                        sw.WriteLine("{0}, {1}, {2}", start, s, m2Config.SoundStand);
-                    start++;
+                    {
+                        newRecord.Sound[0] = m2Config.SoundStand;
+                        newRecord.Sound[1] = m2Config.SoundOpen;
+                        newRecord.Sound[2] = m2Config.SoundLoop;
+                        newRecord.Sound[3] = m2Config.SoundClose;
+                        newRecord.Sound[4] = m2Config.SoundDestroy;
+                        newRecord.Sound[5] = m2Config.SoundOpened;
+                        newRecord.Sound[6] = m2Config.SoundCustom0;
+                        newRecord.Sound[7] = m2Config.SoundCustom1;
+                        newRecord.Sound[8] = m2Config.SoundCustom2;
+                        newRecord.Sound[9] = m2Config.SoundCustom3;
+                        newRecord.GeoBoxMinX = m2Config.GeoBoxMinX;
+                        newRecord.GeoBoxMinY = m2Config.GeoBoxMinY;
+                        newRecord.GeoBoxMinZ = m2Config.GeoBoxMinZ;
+                        newRecord.GeoBoxMaxX = m2Config.GeoBoxMaxX;
+                        newRecord.GeoBoxMaxY = m2Config.GeoBoxMaxY;
+                        newRecord.GeoBoxMaxZ = m2Config.GeoBoxMaxZ;
+                        newRecord.ObjectEffectPackageID = m2Config.ObjectEffectPackageID;
+                    }
+                    dbc.Rows.Add(newRecord);
+                    displayID++;
                 }
+                DBReader.Write(dbc, filePath);
             }
+            else
+                throw new ArgumentException(string.Format("Couldn't insert displayIDs into range {0} - {1}; {2} displayIDs in that range are already taken!",
+                    displayID, displayID + modelPaths.Count - 1, AmountInRange(displayID, displayID + modelPaths.Count - 1)));
         }
 
         public int SuggestStartDisplayID()
