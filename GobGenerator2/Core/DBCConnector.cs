@@ -37,8 +37,11 @@ namespace GobGenerator2.Core
 
         public void SetDBCFile(string filePath)
         {
-            this.filePath = filePath;
-            dbc = DBReader.Read<GameObjectDisplayInfo>(filePath);
+            if (File.Exists(filePath))
+            {
+                this.filePath = filePath;
+                dbc = DBReader.Read<GameObjectDisplayInfo>(filePath);
+            }
         }
 
         public HashSet<string> AlreadyThere()
@@ -72,6 +75,11 @@ namespace GobGenerator2.Core
                     start++;
                 }
             }
+        }
+
+        public int SuggestStartDisplayID()
+        {
+            return dbc.Rows.NextKey;
         }
 
         public int AmountInRange(int start, int end)

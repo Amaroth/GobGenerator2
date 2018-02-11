@@ -78,6 +78,7 @@ namespace GobGenerator2.GUI
         private void dbcBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             usi.dbcPath = dbcBox.Text;
+            displayIDBox.Value = core.SuggestStartDisplayID();
         }
 
         private void hostBox_TextChanged(object sender, TextChangedEventArgs e)

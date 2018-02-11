@@ -93,6 +93,17 @@ namespace GobGenerator2.Core
 
         }
 
+        public int SuggestStartDisplayID()
+        {
+            if (File.Exists(usi.dbcPath))
+            {
+                dbc.SetDBCFile(usi.dbcPath);
+                return dbc.SuggestStartDisplayID();
+            }
+            else
+                return usi.startDisplayID;
+        }
+
         public void Test()
         {
 
