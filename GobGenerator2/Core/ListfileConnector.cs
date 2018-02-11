@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using System.Windows;
 
 namespace GobGenerator2.Core
 {
@@ -13,6 +9,14 @@ namespace GobGenerator2.Core
     {
         private HashSet<string> filePaths;
 
+        /// <summary>
+        /// Goes through provided file and gets set of valid file paths in it.
+        /// </summary>
+        /// <param name="filePath">Path to input listfile.</param>
+        /// <param name="exportM2">Include M2/MDX/MDL?</param>
+        /// <param name="exportWMO">Include root WMO?</param>
+        /// <param name="alreadyThere">For duplicity avoidance</param>
+        /// <returns>Filtered valid file paths.</returns>
         public HashSet<string> ReadListfile(string filePath, bool exportM2, bool exportWMO, HashSet<string> alreadyThere)
         {
             filePaths = new HashSet<string>();
@@ -20,7 +24,7 @@ namespace GobGenerator2.Core
             {
                 StreamReader sr = new StreamReader(filePath);
                 string line;
-                Regex reg = new Regex(@".*_{1}[0-9]{3}\.wmo");
+                Regex reg = new Regex(@".*_[0-9]{3}\.wmo");
 
                 while ((line = sr.ReadLine()) != null)
                 {
@@ -29,6 +33,7 @@ namespace GobGenerator2.Core
                     {
                         if (line.EndsWith(".wmo"))
                         {
+                            /// Avoid inserting nonroot WMO files.
                             if (exportWMO && !reg.IsMatch(line))
                                 filePaths.Add(line);
                         }
@@ -40,7 +45,7 @@ namespace GobGenerator2.Core
             catch (Exception e)
             {
                 filePaths = new HashSet<string>();
-                throw new Exception("Error while attempting to read " + filePath + "\n\n" + e.ToString());
+                throw new Exception("Error while attempting to read input listfile " + filePath + "\n\n" + e.ToString());
             }
             return filePaths;
         }

@@ -21,6 +21,7 @@ namespace GobGenerator2.GUI
         private void generateButt_Click(object sender, RoutedEventArgs e)
         {
             core.Generate();
+            displayIDBox.Value = core.SuggestStartDisplayID();
         }
 
         private void listfileButt_Click(object sender, RoutedEventArgs e)
