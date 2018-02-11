@@ -18,6 +18,46 @@ namespace GobGenerator2.GUI
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Loads values into components according to saved/default user settings.
+        /// </summary>
+        internal void LoadSettings()
+        {
+            var usi = UserSettings.Instance;
+
+            listfileBox.Text = usi.listfilePath;
+            dbcBox.Text = usi.dbcPath;
+            if (usi.exportM2)
+            {
+                if (usi.exportWMO)
+                    bothRadio.IsChecked = true;
+                else
+                    m2Radio.IsChecked = true;
+            }
+            else if (usi.exportWMO)
+                wmoRadio.IsChecked = true;
+
+            hostBox.Text = usi.host;
+            loginBox.Text = Utilities.ToInsecureString(usi.login);
+            passBox.Password = Utilities.ToInsecureString(usi.password);
+            savePassBox.IsChecked = usi.savePassword;
+            databaseBox.Text = usi.database;
+            tableBox.Text = usi.table;
+            portBox.Value = usi.port;
+
+            displayIDBox.Value = usi.startDisplayID;
+            entryBox.Value = usi.baseEntry;
+            prefixBox.Text = usi.prefix;
+            postfixBox.Text = usi.postfix;
+            insertRadio.IsChecked = usi.useInsert;
+            replaceRadio.IsChecked = !usi.useInsert;
+            avoidDuplicatesBox.IsChecked = usi.avoidDuplicates;
+
+            minDisplayIDBox.Value = usi.minDisplayID;
+            maxDisplayIDBox.Value = usi.maxDisplayID;
+        }
+
+        #region Button event handlers...
         private void generateButt_Click(object sender, RoutedEventArgs e)
         {
             core.Generate();
@@ -59,18 +99,36 @@ namespace GobGenerator2.GUI
             core.CheckForCollisions();
         }
 
-        private void Window_Drop(object sender, DragEventArgs e)
+        private void syncButt_Click(object sender, RoutedEventArgs e)
         {
-            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            if (files.Length == 1)
-            {
-                if (System.IO.Path.GetExtension(files[0]).ToLower() == ".dbc")
-                    dbcBox.Text = files[0];
-                else
-                    listfileBox.Text = files[0];
-            }
+            core.DisplayIDToDB();
+        }
+        #endregion
+
+        #region Checkbox and radio event handlers...
+        private void avoidDuplicatesBox_Checked(object sender, RoutedEventArgs e)
+        {
+            usi.avoidDuplicates = (bool)avoidDuplicatesBox.IsChecked;
         }
 
+        private void fileTypeRadio_Checked(object sender, RoutedEventArgs e)
+        {
+            usi.exportM2 = (bool)m2Radio.IsChecked || (bool)bothRadio.IsChecked;
+            usi.exportWMO = (bool)wmoRadio.IsChecked || (bool)bothRadio.IsChecked;
+        }
+
+        private void insertRadio_Checked(object sender, RoutedEventArgs e)
+        {
+            usi.useInsert = (bool)insertRadio.IsChecked;
+        }
+
+        private void savePassBox_Checked(object sender, RoutedEventArgs e)
+        {
+            usi.savePassword = (bool)savePassBox.IsChecked;
+        }
+        #endregion
+
+        #region TextBox event handlers...
         private void listfileBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             usi.listfilePath = listfileBox.Text;
@@ -116,64 +174,9 @@ namespace GobGenerator2.GUI
         {
             usi.postfix = postfixBox.Text;
         }
+        #endregion
 
-        private void insertRadio_Checked(object sender, RoutedEventArgs e)
-        {
-            usi.useInsert = (bool)insertRadio.IsChecked;
-        }
-
-        private void savePassBox_Checked(object sender, RoutedEventArgs e)
-        {
-            usi.savePassword = (bool)savePassBox.IsChecked;
-        }
-
-        private void fileTypeRadio_Checked(object sender, RoutedEventArgs e)
-        {
-            usi.exportM2 = (bool)m2Radio.IsChecked || (bool)bothRadio.IsChecked;
-            usi.exportWMO = (bool)wmoRadio.IsChecked || (bool)bothRadio.IsChecked;
-        }
-
-        internal void LoadSettings()
-        {
-            var usi = UserSettings.Instance;
-
-            listfileBox.Text = usi.listfilePath;
-            dbcBox.Text = usi.dbcPath;
-            if (usi.exportM2)
-            {
-                if (usi.exportWMO)
-                    bothRadio.IsChecked = true;
-                else
-                    m2Radio.IsChecked = true;
-            }
-            else if (usi.exportWMO)
-                wmoRadio.IsChecked = true;
-
-            hostBox.Text = usi.host;
-            loginBox.Text = Utilities.ToInsecureString(usi.login);
-            passBox.Password = Utilities.ToInsecureString(usi.password);
-            savePassBox.IsChecked = usi.savePassword;
-            databaseBox.Text = usi.database;
-            tableBox.Text = usi.table;
-            portBox.Value = usi.port;
-
-            displayIDBox.Value = usi.startDisplayID;
-            entryBox.Value = usi.baseEntry;
-            prefixBox.Text = usi.prefix;
-            postfixBox.Text = usi.postfix;
-            insertRadio.IsChecked = usi.useInsert;
-            replaceRadio.IsChecked = !usi.useInsert;
-            avoidDuplicatesBox.IsChecked = usi.avoidDuplicates;
-
-            minDisplayIDBox.Value = usi.minDisplayID;
-            maxDisplayIDBox.Value = usi.maxDisplayID;
-        }
-
-        private void syncButt_Click(object sender, RoutedEventArgs e)
-        {
-            core.DisplayIDToDB();
-        }
-
+        #region IntegerUpDown event handlers...
         private void portBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             usi.port = (int)portBox.Value;
@@ -198,10 +201,18 @@ namespace GobGenerator2.GUI
         {
             usi.maxDisplayID = (int)maxDisplayIDBox.Value;
         }
+        #endregion
 
-        private void avoidDuplicatesBox_Checked(object sender, RoutedEventArgs e)
+        private void Window_Drop(object sender, DragEventArgs e)
         {
-            usi.avoidDuplicates = (bool)avoidDuplicatesBox.IsChecked;
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Length == 1)
+            {
+                if (System.IO.Path.GetExtension(files[0]).ToLower() == ".dbc")
+                    dbcBox.Text = files[0];
+                else
+                    listfileBox.Text = files[0];
+            }
         }
     }
 }
