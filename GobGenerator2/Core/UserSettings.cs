@@ -3,6 +3,7 @@ using System.Text;
 using System.IO;
 using System.Windows;
 using System.Xml;
+using System.Security.Cryptography;
 
 namespace GobGenerator2.Core
 {
@@ -57,7 +58,7 @@ namespace GobGenerator2.Core
         private void DefaultSettings()
         {
             xml = new XmlDocument();
-
+            
             XmlDeclaration declaration = xml.CreateXmlDeclaration("1.0", "UTF-8", null);
             XmlElement root = xml.DocumentElement;
             xml.InsertBefore(declaration, root);

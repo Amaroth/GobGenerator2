@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WDBXLib;
 using WDBXLib.Reader;
 using WDBXLib.Definitions.WotLK;
-using System.Windows;
 using System.IO;
-using System.Xml;
 using WDBXLib.Storage;
 
 namespace GobGenerator2.Core
