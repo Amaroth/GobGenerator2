@@ -37,17 +37,7 @@ namespace GobGenerator2.Core
             catch (Exception e)
             {
                 filePaths = new HashSet<string>();
-                MessageBox.Show("Error while attempting to read " + filePath + "\n\n" + e.ToString());
-            }
-            using (StreamWriter sw = new StreamWriter("filteredListfile.txt"))
-            {
-                foreach (string s in filePaths)
-                    sw.WriteLine(s);
-            }
-            using (StreamWriter sw = new StreamWriter("alreadyThere.txt"))
-            {
-                foreach (string s in alreadyThere)
-                    sw.WriteLine(s);
+                throw new Exception("Error while attempting to read " + filePath);
             }
         }
     }

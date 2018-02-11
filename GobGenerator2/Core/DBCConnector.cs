@@ -8,16 +8,27 @@ using WDBXLib.Reader;
 using WDBXLib.Definitions.WotLK;
 using System.Windows;
 using System.IO;
+using System.Xml;
 
 namespace GobGenerator2.Core
 {
     class DBCConnector
     {
-        
+        DBCDataConfig m2Config;
+        DBCDataConfig wmoConfig;
 
         public DBCConnector()
         {
-
+            try
+            {
+                m2Config = new DBCDataConfig("M2DBCConfig.xml");
+            }
+            catch { throw new Exception("Error occured while attempting to read and parse M2DBCConfig.xml."); }
+            try
+            {
+                wmoConfig = new DBCDataConfig("WMODBCConfig.xml");
+            }
+            catch { throw new Exception("Error occured while attempting to read and parse WMODBCConfig.xml."); }
         }
 
         public HashSet<string> AlreadyThere(string filePath)
@@ -36,16 +47,11 @@ namespace GobGenerator2.Core
                             result.Add(row.ModelName.ToLower().Substring(0, row.ModelName.Length - 3) + "m2");
                     }
                 }
-                catch (Exception e) { MessageBox.Show("Error while attempting to read DBC file.:\n\n" + e.ToString()); }
+                catch{ throw new Exception("Error while attempting to read DBC file."); }
             }
             else
                 MessageBox.Show("Provided DBC file not found.");
             return result;
-        }
-
-        public void ConnectDBC(string dbcPath)
-        {
-            var entry = DBReader.Read<GameObjectDisplayInfo>(dbcPath);
         }
     }
 }

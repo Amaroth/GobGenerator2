@@ -30,7 +30,7 @@ namespace GobGenerator2.Core
 
         private UserSettings usi = UserSettings.Instance;
         private SQLConnector sql = new SQLConnector();
-        private DBCConnector dbc = new DBCConnector();
+        private DBCConnector dbc;
         private ListfileConnector lc = new ListfileConnector();
 
         public void TestConnection()
@@ -45,10 +45,15 @@ namespace GobGenerator2.Core
 
         public void Generate()
         {
-            HashSet<string> alreadyThere = new HashSet<string>();
-            if (usi.avoidDuplicates)
-                alreadyThere = dbc.AlreadyThere(usi.dbcPath);
-            lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, usi.avoidDuplicates, alreadyThere);
+            try
+            {
+                dbc = new DBCConnector();
+                HashSet<string> alreadyThere = new HashSet<string>();
+                if (usi.avoidDuplicates)
+                    alreadyThere = dbc.AlreadyThere(usi.dbcPath);
+                lc.ReadListfile(usi.listfilePath, usi.exportM2, usi.exportWMO, usi.avoidDuplicates, alreadyThere);
+            }
+            catch { }
         }
 
         public void OnlyDisplayToDB()

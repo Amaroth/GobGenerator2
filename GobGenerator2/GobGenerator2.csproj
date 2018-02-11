@@ -81,6 +81,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Core\Core.cs" />
+    <Compile Include="Core\DBCDataConfig.cs" />
     <Compile Include="Core\DBCConnector.cs" />
     <Compile Include="Core\ListfileConnector.cs" />
     <Compile Include="Core\SQLConnector.cs" />
