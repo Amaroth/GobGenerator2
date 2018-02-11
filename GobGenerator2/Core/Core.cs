@@ -90,7 +90,7 @@ namespace GobGenerator2.Core
 
         public void Help()
         {
-
+            System.Diagnostics.Process.Start("https://github.com/Amaroth/GobGenerator2/issues");
         }
 
         public int SuggestStartDisplayID()
