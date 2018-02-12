@@ -208,14 +208,14 @@
                 <TextBlock TextWrapping="Wrap" MaxWidth="300">Use this part only if you want to generate only gameobjects out of displayIDs which already exist. No new displayIDs will be created here.</TextBlock>
             </Grid.ToolTip>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="7*"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="7*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" VerticalAlignment="Center">Gobs from displayIDs:</TextBlock>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center">Only gobs from displayIDs:</TextBlock>
             <TextBlock Grid.Column="1" VerticalAlignment="Center">First:</TextBlock>
             <xctk:IntegerUpDown Grid.Column="2" Name="minDisplayIDBox" TextAlignment="Left" Minimum="1" Maximum="16777215" ValueChanged="minDisplayIDBox_ValueChanged" Margin="5,0,5,0">
                 <xctk:IntegerUpDown.ToolTip>
