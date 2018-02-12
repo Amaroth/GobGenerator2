@@ -16,10 +16,10 @@ namespace GobGenerator2.Core
         private int port;
         private string database;
         private string table;
-        private string login;
-        private string password;
+        private SecureString login;
+        private SecureString password;
 
-        private string connectionString;
+        private SecureString connectionString;
 
         public SQLConnector()
         {
@@ -27,15 +27,24 @@ namespace GobGenerator2.Core
             {
                 m2Config = new SQLDataConfig("M2SQLConfig.xml");
             }
-            catch (Exception e) { throw new Exception("Error occured while attempting to read and parse M2SQLConfig.xml.\n\n" + e.ToString()); }
+            catch (Exception e) { MessageBox.Show(e.ToString()); throw; }
             try
             {
                 wmoConfig = new SQLDataConfig("WMOSQLConfig.xml");
             }
-            catch (Exception e) { throw new Exception("Error occured while attempting to read and parse WMOSQLConfig.xml.\n\n" + e.ToString()); }
+            catch (Exception e) { MessageBox.Show(e.ToString()); throw; }
         }
 
-        public void SetConnectionInformation(string host, int port, string database, string table, string login, string password)
+        /// <summary>
+        /// Sets connection string based in provided input.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="database"></param>
+        /// <param name="table"></param>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        public void SetConnectionInformation(string host, int port, string database, string table, SecureString login, SecureString password)
         {
             this.host = host;
             this.port = port;
@@ -43,18 +52,25 @@ namespace GobGenerator2.Core
             this.table = table;
             this.login = login;
             this.password = password;
-            connectionString = string.Format("Server={0}; Port={1}; Database={2}; Uid={3}; Pwd={4}; SslMode=none;", host, port, database, login, password);
+            connectionString = Utilities.ToSecureString(string.Format("Server={0}; Port={1}; Database={2}; Uid={3}; Pwd={4}; SslMode=none;",
+                host, port, database, Utilities.ToInsecureString(login), Utilities.ToInsecureString(password)));
         }
 
         /// <summary>
-        /// Sets connection string and then tests connection.
+        /// 
         /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="database"></param>
+        /// <param name="table"></param>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
         public void TestConnection(string host, int port, string database, string table, SecureString login, SecureString password)
         {
-            SetConnectionInformation(host, port, database, table, Utilities.ToInsecureString(login), Utilities.ToInsecureString(password));
+            SetConnectionInformation(host, port, database, table, login, password);
             try
             {
-                connection = new MySqlConnection(connectionString);
+                connection = new MySqlConnection(Utilities.ToInsecureString(connectionString));
                 connection.Open();
                 MessageBox.Show("Connection was succesful.");
                 connection.Close();
@@ -69,7 +85,7 @@ namespace GobGenerator2.Core
             
             try
             {
-                connection = new MySqlConnection(connectionString);
+                connection = new MySqlConnection(Utilities.ToInsecureString(connectionString));
                 connection.Open();
                 var query = new MySqlCommand(string.Format("SELECT COUNT({0}) FROM {1} WHERE {0} BETWEEN {2} AND {3};", m2Config.entryColName, table, start, end), connection);
                 using (var r = query.ExecuteReader())
@@ -85,7 +101,7 @@ namespace GobGenerator2.Core
 
         public void CreateGameobjects(List<Tuple<int, string>> m2DisplayIDs, List<Tuple<int, string>> wmoDisplayIDs, int baseEntry, bool useInsert)
         {
-            connection = new MySqlConnection(connectionString);
+            connection = new MySqlConnection(Utilities.ToInsecureString(connectionString));
             connection.Open();
 
 

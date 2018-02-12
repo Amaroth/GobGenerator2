@@ -156,12 +156,12 @@
             </Grid.ColumnDefinitions>
             <RadioButton Grid.Column="0" Name="insertRadio" Content="INSERT" VerticalAlignment="Center" Checked="insertRadio_Checked" Unchecked="insertRadio_Checked">
                 <RadioButton.ToolTip>
-                    <TextBlock TextWrapping="Wrap" MaxWidth="300">In case of collisions, already existing gameobjects will be kept.</TextBlock>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">If collisions occur, old data will not be overwritten. Using REPLACE and checking for collisions prior to generation is recommended.</TextBlock>
                 </RadioButton.ToolTip>
             </RadioButton>
             <RadioButton Grid.Column="1" Name="replaceRadio" Content="REPLACE" VerticalAlignment="Center" Checked="insertRadio_Checked" Unchecked="insertRadio_Checked">
                 <RadioButton.ToolTip>
-                    <TextBlock TextWrapping="Wrap" MaxWidth="300">In case of collisions, already existing gameobjects will be overwritten by generated ones.</TextBlock>
+                    <TextBlock TextWrapping="Wrap" MaxWidth="300">If collisions occur, old data will be overwritten. Using REPLACE and checking for collisions prior to generation is recommended.</TextBlock>
                 </RadioButton.ToolTip>
             </RadioButton>
         </Grid>

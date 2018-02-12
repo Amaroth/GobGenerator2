@@ -81,7 +81,6 @@ namespace GobGenerator2.Core
             Utilities.XmlAddElement(xml, xml.DocumentElement, "table", table, null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "port", port.ToString(), null);
 
-            Utilities.XmlAddElement(xml, xml.DocumentElement, "startDisplayID", startDisplayID.ToString(), null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "baseEntry", baseEntry.ToString(), null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "prefix", prefix, null);
             Utilities.XmlAddElement(xml, xml.DocumentElement, "postfix", postfix, null);
@@ -117,7 +116,6 @@ namespace GobGenerator2.Core
                     table = xml.GetElementsByTagName("table")[0].InnerText;
                     port = int.Parse(xml.GetElementsByTagName("port")[0].InnerText);
 
-                    startDisplayID = int.Parse(xml.GetElementsByTagName("startDisplayID")[0].InnerText);
                     baseEntry = int.Parse(xml.GetElementsByTagName("baseEntry")[0].InnerText);
                     prefix = xml.GetElementsByTagName("prefix")[0].InnerText;
                     postfix = xml.GetElementsByTagName("postfix")[0].InnerText;
@@ -153,7 +151,6 @@ namespace GobGenerator2.Core
                 xml.GetElementsByTagName("table")[0].InnerText = table;
                 xml.GetElementsByTagName("port")[0].InnerText = port.ToString();
 
-                xml.GetElementsByTagName("startDisplayID")[0].InnerText = startDisplayID.ToString();
                 xml.GetElementsByTagName("baseEntry")[0].InnerText = baseEntry.ToString();
                 xml.GetElementsByTagName("prefix")[0].InnerText = prefix;
                 xml.GetElementsByTagName("postfix")[0].InnerText = postfix;

@@ -4,6 +4,7 @@ using WDBXLib.Reader;
 using WDBXLib.Definitions.WotLK;
 using System.IO;
 using WDBXLib.Storage;
+using System.Windows;
 
 namespace GobGenerator2.Core
 {
@@ -21,44 +22,55 @@ namespace GobGenerator2.Core
             {
                 m2Config = new DBCDataConfig("M2DBCConfig.xml");
             }
-            catch (Exception e) { throw new Exception("Error occured while attempting to read and parse M2DBCConfig.xml.\n\n" + e.ToString()); }
+            catch (Exception e) { MessageBox.Show(e.ToString()); throw; }
             try
             {
                 wmoConfig = new DBCDataConfig("WMODBCConfig.xml");
             }
-            catch (Exception e) { throw new Exception("Error occured while attempting to read and parse WMODBCConfig.xml.\n\n" + e.ToString()); }
+            catch (Exception e) { MessageBox.Show(e.ToString()); throw; }
         }
 
+        /// <summary>
+        /// Opens given DBC file for reading.
+        /// </summary>
+        /// <param name="filePath"></param>
         public void SetDBCFile(string filePath)
         {
-            if (File.Exists(filePath))
+            try
             {
                 this.filePath = filePath;
                 dbc = DBReader.Read<GameObjectDisplayInfo>(filePath);
             }
+            catch (Exception e) { throw new Exception("Error occured while attempting to read provided DBC.:\n\n" + e.Message); }
         }
 
+        /// <summary>
+        /// Gets set of lowercase file paths which are already in DBC - for duplication avoidance.
+        /// </summary>
+        /// <returns></returns>
         public HashSet<string> AlreadyThere()
         {
             HashSet<string> result = new HashSet<string>();
-            try
+            foreach (var row in dbc.Rows)
             {
-                foreach (var row in dbc.Rows)
-                {
-                        
-                    if (row.ModelName.Length > 3 && row.ModelName.ToLower().EndsWith(".mdx"))
-                        result.Add(row.ModelName.ToLower().Substring(0, row.ModelName.Length - 3) + "m2");
-                    else
-                        result.Add(row.ModelName.ToLower());
-                }
+                string modelPath = row.ModelName.ToLower();
+                if (!modelPath.EndsWith(".wmo"))
+                    modelPath = Path.ChangeExtension(modelPath, ".m2");
+                result.Add(modelPath);
             }
-            catch (Exception e) { throw new Exception("Error while attempting to read DBC file.\n\n" + e.ToString()); }
             return result;
         }
 
-        public void CreateDisplayIDs(HashSet<string> modelPaths, int displayID)
+        /// <summary>
+        /// generates records into DBC.
+        /// </summary>
+        /// <param name="modelPaths">Model paths to be added</param>
+        /// <param name="displayID">DisplayID of the first model</param>
+        /// <param name="useInsert">If false, replace method is used.</param>
+        public void CreateDisplayIDs(HashSet<string> modelPaths, int displayID, bool useInsert)
         {
-            if (AmountInRange(displayID, displayID + modelPaths.Count - 1) == 0)
+            int amountThere = AmountInRange(displayID, displayID + modelPaths.Count - 1);
+            if (amountThere == 0 || !useInsert)
             {
                 foreach (string s in modelPaths)
                 {
@@ -106,21 +118,36 @@ namespace GobGenerator2.Core
                         newRecord.GeoBoxMaxZ = m2Config.GeoBoxMaxZ;
                         newRecord.ObjectEffectPackageID = m2Config.ObjectEffectPackageID;
                     }
-                    dbc.Rows.Add(newRecord);
+                    if (dbc.Rows[newRecord.ID] != null && !useInsert)
+                        dbc.Rows[newRecord.ID] = newRecord;
+                    else
+                        dbc.Rows.Add(newRecord);
                     displayID++;
                 }
                 DBReader.Write(dbc, filePath);
             }
             else
-                throw new ArgumentException(string.Format("Couldn't insert displayIDs into range {0} - {1}; {2} displayIDs in that range are already taken!",
-                    displayID, displayID + modelPaths.Count - 1, AmountInRange(displayID, displayID + modelPaths.Count - 1)));
+                throw new Exception(string.Format("Couldn't insert displayIDs into range {0} - {1}; {2} displayIDs in that range are already taken!",
+                    displayID, displayID + modelPaths.Count - 1, amountThere));
         }
 
+        /// <summary>
+        /// Gets the highest ID in DBC + 1
+        /// </summary>
+        /// <returns></returns>
         public int SuggestStartDisplayID()
         {
             return dbc.Rows.NextKey;
         }
 
+        /// <summary>
+        /// Selects nonWMO DisplayID, Name(not whole path) from range.
+        /// </summary>
+        /// <param name="start">Min displayID</param>
+        /// <param name="end">Max displaID</param>
+        /// <param name="namePrefix">Prefix to be put in front of name</param>
+        /// <param name="namePostfix">Postfix to be put behind name</param>
+        /// <returns></returns>
         public List<Tuple<int, string>> GetM2DisplayIDsFromRange(int start, int end, string namePrefix, string namePostfix)
         {
             List<Tuple<int, string>> result = new List<Tuple<int, string>>();
@@ -130,6 +157,14 @@ namespace GobGenerator2.Core
             return result;
         }
 
+        /// <summary>
+        /// Selects WMO DisplayID, Name(not whole path) from range.
+        /// </summary>
+        /// <param name="start">Min displayID</param>
+        /// <param name="end">Max displaID</param>
+        /// <param name="namePrefix">Prefix to be put in front of name</param>
+        /// <param name="namePostfix">Postfix to be put behind name</param>
+        /// <returns></returns>
         public List<Tuple<int, string>> GetWMODisplayIDsFromRange(int start, int end, string namePrefix, string namePostfix)
         {
             List<Tuple<int, string>> result = new List<Tuple<int, string>>();
@@ -139,6 +174,12 @@ namespace GobGenerator2.Core
             return result;
         }
 
+        /// <summary>
+        /// Counts amount of displayIDs already in existence within provided range.
+        /// </summary>
+        /// <param name="start">Min displayID</param>
+        /// <param name="end">Max displayID</param>
+        /// <returns></returns>
         public int AmountInRange(int start, int end)
         {
             if (start > end)

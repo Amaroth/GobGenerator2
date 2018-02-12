@@ -45,15 +45,14 @@ namespace GobGenerator2.Core
             if (!File.Exists(xmlPath))
                 throw new FileNotFoundException(string.Format("File {0} could not be found. Make sure its included in app's folder, GobDisplayGenerator can't run without it.", xmlPath));
 
-            using (var sr = new StreamReader(xmlPath))
-            {
-                string xmlString = sr.ReadToEnd();
-                sr.Close();
-                xml.LoadXml(xmlString);
-            }
-
             try
             {
+                using (var sr = new StreamReader(xmlPath))
+                {
+                    string xmlString = sr.ReadToEnd();
+                    xml.LoadXml(xmlString);
+                }
+
                 SoundStand = int.Parse(xml.GetElementsByTagName("SoundStand")[0].InnerText);
                 SoundOpen = int.Parse(xml.GetElementsByTagName("SoundOpen")[0].InnerText);
                 SoundLoop = int.Parse(xml.GetElementsByTagName("SoundLoop")[0].InnerText);
@@ -72,7 +71,7 @@ namespace GobGenerator2.Core
                 GeoBoxMaxZ = float.Parse(xml.GetElementsByTagName("GeoBoxMaxZ")[0].InnerText);
                 ObjectEffectPackageID = int.Parse(xml.GetElementsByTagName("ObjectEffectPackageID")[0].InnerText);
             }
-            catch (XmlException e) { throw new Exception(string.Format("Error occured while loading data from {0}.\n\n", xmlPath) + e.Message); }
+            catch (Exception e) { throw new Exception(string.Format("Error occured while loading data from {0}.\n\n", xmlPath) + e.Message); }
         }
     }
 }
