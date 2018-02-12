@@ -43,7 +43,7 @@ namespace GobGenerator2.Core
         private void LoadSettings()
         {
             if (!File.Exists(xmlPath))
-                throw new FileNotFoundException(string.Format("File {0} could not be found. Make sure its included in app's folder, GobDisplayGenerator can't run without it.", xmlPath));
+                throw new FileNotFoundException(string.Format("File {0} could not be found. Make sure its included in app's /Configs/ folder, GobDisplayGenerator can't run without it.", xmlPath));
 
             try
             {

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GobGenerator2.GUI"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="GobDisplayGenerator 2.0 dev0"
+        Title="GobDisplayGenerator 2.0 dev"
         Height="450" Width="700" MinHeight="450" MinWidth="680"
         AllowDrop="True" Drop="Window_Drop">
     <Grid Margin="10,5,5,5">

@@ -26,9 +26,16 @@ namespace GobGenerator2.Core
         private DBCConnector dbc = new DBCConnector();
         private ListfileConnector lc = new ListfileConnector();
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestConnection()
         {
-            sql.TestConnection(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
+            try
+            {
+                sql.TestConnection(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
+            }
+            catch (Exception e) { MessageBox.Show("Connection to MySQL server was not successful.\n\n" + e.Message); }
         }
 
         public void CheckForCollisions()
@@ -105,11 +112,6 @@ namespace GobGenerator2.Core
             }
             else
                 return usi.startDisplayID;
-        }
-
-        public void Test()
-        {
-
         }
     }
 }
