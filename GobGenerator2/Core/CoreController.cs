@@ -27,7 +27,7 @@ namespace GobGenerator2.Core
         private ListfileConnector lc = new ListfileConnector();
 
         /// <summary>
-        /// 
+        /// Attempts to establish MySQL connection with currently stored input from user.
         /// </summary>
         public void TestConnection()
         {
@@ -38,6 +38,9 @@ namespace GobGenerator2.Core
             catch (Exception e) { MessageBox.Show("Connection to MySQL server was not successful.\n\n" + e.Message); }
         }
 
+        /// <summary>
+        /// Checks how many records would be created with currently stored user input, and determines how many collisions would occur in DBC and how many in MySQL.
+        /// </summary>
         public void CheckForCollisions()
         {
             try
@@ -68,6 +71,9 @@ namespace GobGenerator2.Core
             catch (Exception e) { MessageBox.Show("Couldn't check for collisions, following error occured.:\n\n" + e.Message); }
         }
 
+        /// <summary>
+        /// Executes displayID and then gameobject generation with currently stored user input.
+        /// </summary>
         public void Generate()
         {
             try
@@ -85,33 +91,54 @@ namespace GobGenerator2.Core
             catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
         }
 
+        /// <summary>
+        /// Generates gameobjects in MySQL out of displayIDs found in DBC within currently specified range - for workflow not including creation of new displayIDs.
+        /// </summary>
         public void DisplayIDToDB()
         {
-            sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
-            dbc.SetDBCFile(usi.dbcPath);
-            sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix),
-                dbc.GetWMODisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix), usi.baseEntry, usi.useInsert);
+            try
+            {
+                sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
+                dbc.SetDBCFile(usi.dbcPath);
+                sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix),
+                    dbc.GetWMODisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix), usi.baseEntry, usi.useInsert);
+            }
+            catch {  }
         }
 
+        /// <summary>
+        /// Saves current user input data into XML for loading on next app's startup.
+        /// </summary>
         public void SaveUserSettings()
         {
             usi.SaveUserSettings();
         }
 
+        /// <summary>
+        /// Opens issue tracker in default web browser.
+        /// </summary>
         public void Help()
         {
             System.Diagnostics.Process.Start("https://github.com/Amaroth/GobGenerator2/issues");
         }
 
+        /// <summary>
+        /// Gets next free displayID (highest ID + 1) from DBC.
+        /// </summary>
+        /// <returns></returns>
         public int SuggestStartDisplayID()
         {
+            int result = usi.startDisplayID;
             if (File.Exists(usi.dbcPath))
             {
-                dbc.SetDBCFile(usi.dbcPath);
-                return dbc.SuggestStartDisplayID();
+                try
+                {
+                    dbc.SetDBCFile(usi.dbcPath);
+                    result = dbc.SuggestStartDisplayID();
+                }
+                catch (Exception e) { MessageBox.Show("WARNING: Could not determine next free displayID in DBC. \n\n" + e.Message); }
             }
-            else
-                return usi.startDisplayID;
+            return result;
         }
     }
 }
