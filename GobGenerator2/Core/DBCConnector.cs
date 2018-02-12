@@ -20,12 +20,12 @@ namespace GobGenerator2.Core
         {
             try
             {
-                m2Config = new DBCDataConfig("M2DBCConfig.xml");
+                m2Config = new DBCDataConfig("Configs/M2DBCConfig.xml");
             }
             catch (Exception e) { MessageBox.Show(e.ToString()); throw; }
             try
             {
-                wmoConfig = new DBCDataConfig("WMODBCConfig.xml");
+                wmoConfig = new DBCDataConfig("Configs/WMODBCConfig.xml");
             }
             catch (Exception e) { MessageBox.Show(e.ToString()); throw; }
         }

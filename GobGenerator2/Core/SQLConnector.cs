@@ -25,18 +25,18 @@ namespace GobGenerator2.Core
         {
             try
             {
-                m2Config = new SQLDataConfig("M2SQLConfig.xml");
+                m2Config = new SQLDataConfig("Configs/M2SQLConfig.xml");
             }
             catch (Exception e) { MessageBox.Show(e.ToString()); throw; }
             try
             {
-                wmoConfig = new SQLDataConfig("WMOSQLConfig.xml");
+                wmoConfig = new SQLDataConfig("Configs/WMOSQLConfig.xml");
             }
             catch (Exception e) { MessageBox.Show(e.ToString()); throw; }
         }
 
         /// <summary>
-        /// Sets connection string based in provided input.
+        /// Sets connection string based on provided input.
         /// </summary>
         /// <param name="host"></param>
         /// <param name="port"></param>
@@ -57,7 +57,7 @@ namespace GobGenerator2.Core
         }
 
         /// <summary>
-        /// 
+        /// Tests wheter database connection with provided data can be successfuly established.
         /// </summary>
         /// <param name="host"></param>
         /// <param name="port"></param>
@@ -78,32 +78,40 @@ namespace GobGenerator2.Core
             catch (Exception e) { throw new Exception("Error occured while establishing database connection.\n\n" + e.Message); }
         }
 
+        /// <summary>
+        /// Gets amount of gameobjects in range defined by given start and end entries from database.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public int AmountInRange(int start, int end)
         {
             if (start > end)
                 throw new ArgumentException(string.Format("Start entry value ({0}) has to be lower or equal to end value ({1}).", start, end));
             
-            try
+            connection = new MySqlConnection(Utilities.ToInsecureString(connectionString));
+            connection.Open();
+            var query = new MySqlCommand(string.Format("SELECT COUNT({0}) FROM {1} WHERE {0} BETWEEN {2} AND {3};", m2Config.entryColName, table, start, end), connection);
+            using (var r = query.ExecuteReader())
             {
-                connection = new MySqlConnection(Utilities.ToInsecureString(connectionString));
-                connection.Open();
-                var query = new MySqlCommand(string.Format("SELECT COUNT({0}) FROM {1} WHERE {0} BETWEEN {2} AND {3};", m2Config.entryColName, table, start, end), connection);
-                using (var r = query.ExecuteReader())
-                {
-                    if (r.Read())
-                        return Convert.ToInt32(r[0]);
-                }
-                connection.Close();
+                if (r.Read())
+                    return Convert.ToInt32(r[0]);
             }
-            catch (Exception e) { throw e; }
+            connection.Close();
             return 0;
         }
 
+        /// <summary>
+        /// Imports generated gameobjects into database. Runs as one transaction.
+        /// </summary>
+        /// <param name="m2DisplayIDs">List of (displayID, gob name) for M2s</param>
+        /// <param name="wmoDisplayIDs">List of (displayID, gob name) for WMOs</param>
+        /// <param name="baseEntry">gameobject_template.entry = baseEntry+gameobject_template.displayId</param>
+        /// <param name="useInsert">If false, use replace method instead</param>
         public void CreateGameobjects(List<Tuple<int, string>> m2DisplayIDs, List<Tuple<int, string>> wmoDisplayIDs, int baseEntry, bool useInsert)
         {
             connection = new MySqlConnection(Utilities.ToInsecureString(connectionString));
             connection.Open();
-
 
 
             string query = "START TRANSACTION;\n";
@@ -157,14 +165,11 @@ namespace GobGenerator2.Core
                 }
                 query += ";\n";
             }
-
             query += "COMMIT;";
-
 
 
             var command = new MySqlCommand(query, connection);
             command.ExecuteNonQuery();
-
             connection.Close();
         }
     }

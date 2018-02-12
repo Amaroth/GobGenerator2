@@ -93,11 +93,11 @@ namespace GobGenerator2.Core
         /// </summary>
         private void LoadSettings()
         {
-            if (File.Exists("UserSettings.xml"))
+            if (File.Exists("Configs/UserSettings.xml"))
             {
                 try
                 {
-                    using (var sr = new StreamReader("UserSettings.xml"))
+                    using (var sr = new StreamReader("Configs/UserSettings.xml"))
                     {
                         string xmlString = sr.ReadToEnd();
                         sr.Close();
@@ -137,7 +137,7 @@ namespace GobGenerator2.Core
         /// </summary>
         public void SaveUserSettings()
         {
-            using (TextWriter tw = new StreamWriter("UserSettings.xml", false, Encoding.UTF8))
+            using (TextWriter tw = new StreamWriter("Configs/UserSettings.xml", false, Encoding.UTF8))
             {
                 xml.GetElementsByTagName("listfilePath")[0].InnerText = listfilePath;
                 xml.GetElementsByTagName("dbcPath")[0].InnerText = dbcPath;

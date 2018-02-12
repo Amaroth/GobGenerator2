@@ -9,10 +9,7 @@ namespace GobGenerator2.Core
     {
         private static CoreController instance;
 
-        private CoreController()
-        {
-
-        }
+        private CoreController() { }
 
         public static CoreController Instance
         {
