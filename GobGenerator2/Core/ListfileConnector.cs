@@ -22,23 +22,25 @@ namespace GobGenerator2.Core
             filePaths = new HashSet<string>();
             try
             {
-                StreamReader sr = new StreamReader(filePath);
-                string line;
-                Regex reg = new Regex(@".*_[0-9]{3}\.wmo");
-
-                while ((line = sr.ReadLine()) != null)
+                using (var sr = new StreamReader(filePath))
                 {
-                    line = line.ToLower();
-                    if (!alreadyThere.Contains(line))
+                    string line;
+                    Regex reg = new Regex(@".*_[0-9]{3}\.wmo");
+
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        if (line.EndsWith(".wmo"))
+                        line = line.ToLower();
+                        if (!alreadyThere.Contains(line))
                         {
-                            /// Avoid inserting nonroot WMO files.
-                            if (exportWMO && !reg.IsMatch(line))
+                            if (line.EndsWith(".wmo"))
+                            {
+                                /// Avoid inserting nonroot WMO files.
+                                if (exportWMO && !reg.IsMatch(line))
+                                    filePaths.Add(line);
+                            }
+                            else if (exportM2 && (line.EndsWith(".m2") || line.EndsWith(".mdl") || line.EndsWith(".mdx")))
                                 filePaths.Add(line);
                         }
-                        else if (exportM2 && (line.EndsWith(".m2") || line.EndsWith(".mdl") || line.EndsWith(".mdx")))
-                            filePaths.Add(line);
                     }
                 }
             }
