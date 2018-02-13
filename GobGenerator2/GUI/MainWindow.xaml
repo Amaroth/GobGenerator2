@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="GobGenerator 2.0 test2"
+        Title="GobGenerator 2.0 test1"
         Height="450" Width="700" MinHeight="450" MinWidth="680"
         AllowDrop="True" Drop="Window_Drop">
     <Grid Margin="10,5,5,5">
