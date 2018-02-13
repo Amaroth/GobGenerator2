@@ -74,7 +74,7 @@ namespace GobGenerator2.GUI
         private void dbcButt_Click(object sender, RoutedEventArgs e)
         {
             var ofd = new OpenFileDialog();
-            ofd.Filter = "DBC files (*.dbc)|*.dbc";
+            ofd.Filter = "DBC files (*.dbc)|*.dbc|DB2 files (*.db2)|*.db2";
             if ((bool)ofd.ShowDialog())
                 dbcBox.Text = ofd.FileName;
         }
