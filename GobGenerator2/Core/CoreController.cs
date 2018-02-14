@@ -76,7 +76,7 @@ namespace GobGenerator2.Core
         /// </summary>
         public void Generate()
         {
-            try
+            //try
             {
                 sql.SetConnectionInformation(usi.host, usi.port, usi.database, usi.table, usi.login, usi.password);
                 dbc.SetDBCFile(usi.dbcPath);
@@ -88,7 +88,7 @@ namespace GobGenerator2.Core
                 sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1, usi.prefix, usi.postfix),
                     dbc.GetWMODisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1, usi.prefix, usi.postfix), usi.baseEntry, usi.useInsert);
             }
-            catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
+            //catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security;
 using System.Windows;
 
@@ -114,7 +115,7 @@ namespace GobGenerator2.Core
             connection.Open();
 
 
-            string query = "START TRANSACTION;\n";
+            string query = "START TRANSACTION;\r\n";
             if (m2DisplayIDs.Count > 0)
             {
                 if (useInsert)
@@ -126,12 +127,12 @@ namespace GobGenerator2.Core
                 foreach (var col in m2Config.defaultValues)
                     m2Cols += ", `" + col.Key + "`";
 
-                query += string.Format(" INTO `{0}` ({1}) VALUES\n", table, m2Cols);
+                query += string.Format(" INTO `{0}` ({1}) VALUES\r\n", table, m2Cols);
                 bool firstM = true;
                 foreach (var displayID in m2DisplayIDs)
                 {
                     if (!firstM)
-                        query += ",\n";
+                        query += ",\r\n";
                     query += string.Format("({0}, {1}, \"{2}\"", baseEntry + displayID.Item1, displayID.Item1, displayID.Item2);
                     foreach (var col in m2Config.defaultValues)
                         query += ", \"" + col.Value + "\"";
@@ -151,21 +152,26 @@ namespace GobGenerator2.Core
                 foreach (var col in wmoConfig.defaultValues)
                     wmoCols += ", `" + col.Key + "`";
 
-                query += string.Format(" INTO `{0}` ({1}) VALUES\n", table, wmoCols);
+                query += string.Format(" INTO `{0}` ({1}) VALUES\r\n", table, wmoCols);
                 bool firstW = true;
                 foreach (var displayID in wmoDisplayIDs)
                 {
                     if (!firstW)
-                        query += ",\n";
+                        query += ",\r\n";
                     query += string.Format("({0}, {1}, \"{2}\"", baseEntry + displayID.Item1, displayID.Item1, displayID.Item2);
                     foreach (var col in wmoConfig.defaultValues)
                         query += ", \"" + col.Value + "\"";
                     query += ")";
                     firstW = false;
                 }
-                query += ";\n";
+                query += ";\r\n";
             }
             query += "COMMIT;";
+
+            using (var sw = new StreamWriter("SQLQueryBackup.sql"))
+            {
+                sw.Write(query);
+            }
 
 
             var command = new MySqlCommand(query, connection);
