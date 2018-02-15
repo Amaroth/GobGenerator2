@@ -23,8 +23,6 @@ namespace GobGenerator2.GUI
         /// </summary>
         internal void LoadSettings()
         {
-            var usi = UserSettings.Instance;
-
             listfileBox.Text = usi.listfilePath;
             dbcBox.Text = usi.dbcPath;
             if (usi.exportM2)
