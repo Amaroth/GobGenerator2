@@ -206,7 +206,7 @@ namespace GobGenerator2.GUI
             var files = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (files.Length == 1)
             {
-                if (System.IO.Path.GetExtension(files[0]).ToLower() == ".dbc")
+                if (System.IO.Path.GetExtension(files[0]).ToLower() == ".dbc" || System.IO.Path.GetExtension(files[0]).ToLower() == ".db2")
                     dbcBox.Text = files[0];
                 else
                     listfileBox.Text = files[0];
