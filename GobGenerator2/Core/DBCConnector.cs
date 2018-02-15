@@ -118,7 +118,7 @@ namespace GobGenerator2.Core
                         newRecord.GeoBoxMaxZ = m2Config.GeoBoxMaxZ;
                         newRecord.ObjectEffectPackageID = m2Config.ObjectEffectPackageID;
                     }
-                    if (dbc.Rows[newRecord.ID] != null && !useInsert)
+                    if (dbc.Rows.ContainsKey(newRecord.ID) && !useInsert)
                         dbc.Rows[newRecord.ID] = newRecord;
                     else
                         dbc.Rows.Add(newRecord);

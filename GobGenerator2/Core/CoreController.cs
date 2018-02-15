@@ -87,6 +87,7 @@ namespace GobGenerator2.Core
                 dbc.CreateDisplayIDs(listfile, usi.startDisplayID, usi.useInsert);
                 sql.CreateGameobjects(dbc.GetM2DisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1, usi.prefix, usi.postfix),
                     dbc.GetWMODisplayIDsFromRange(usi.startDisplayID, usi.startDisplayID + listfile.Count - 1, usi.prefix, usi.postfix), usi.baseEntry, usi.useInsert);
+                MessageBox.Show("Generation process was successful!");
             }
             catch (Exception e) { MessageBox.Show("Generation process was not successful. Following error occured.:\n\n" + e.Message); }
         }
@@ -108,7 +109,10 @@ namespace GobGenerator2.Core
                 if (usi.exportWMO)
                     dbc.GetWMODisplayIDsFromRange(usi.minDisplayID, usi.maxDisplayID, usi.prefix, usi.postfix);
                 if (m2s.Count + wmos.Count > 0)
+                {
                     sql.CreateGameobjects(m2s, wmos, usi.baseEntry, usi.useInsert);
+                    MessageBox.Show("Generation process was successful!");
+                }
                 else
                     MessageBox.Show("There was nothing found within specified range to import into database.");
             }
