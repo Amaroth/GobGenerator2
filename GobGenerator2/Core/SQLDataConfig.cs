@@ -45,8 +45,8 @@ namespace GobGenerator2.Core
                 entryColName = xml.GetElementsByTagName("Entry")[0].InnerText;
                 displayIDColName = xml.GetElementsByTagName("DisplayID")[0].InnerText;
                 nameColName = xml.GetElementsByTagName("Name")[0].InnerText;
-                defaultValues = new Dictionary<string, string>();
 
+                defaultValues = new Dictionary<string, string>();
                 foreach (XmlNode element in xml.GetElementsByTagName("DefaultValues")[0].ChildNodes)
                     defaultValues.Add(element.Name, element.InnerText);
             }

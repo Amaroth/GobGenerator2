@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--This file contains default values for generated WMO gameobject, and column association definitions. Compatible with TC2 Release 335.63. Change only if tool isn't compatible with your emu/TC2 version.-->
+<!--Made to be compatible with TC2 Release 335.63.-->
 <WMOSQLConfig>
   <ColAssociations>
+    <!--Do NOT edit names of the following elements. Only change names of columns (inner texts (content) of elements) in case 
+    your emu is not compatible with tool because of mismatching column names in database.-->
     <Entry>entry</Entry>
     <DisplayID>displayId</DisplayID>
     <Name>name</Name>
   </ColAssociations>
 
   <DefaultValues>
+    <!--You can add or remove elements here. Give them name matching name of column in your gameobject_template table
+    and set their inner text (content) to value which should be assigned as default to generated gameobjects.-->
     <type>14</type>
   </DefaultValues>
 </WMOSQLConfig>
