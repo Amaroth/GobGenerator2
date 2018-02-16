@@ -48,7 +48,8 @@ namespace GobGenerator2.Core
 
                 defaultValues = new Dictionary<string, string>();
                 foreach (XmlNode element in xml.GetElementsByTagName("DefaultValues")[0].ChildNodes)
-                    defaultValues.Add(element.Name, element.InnerText);
+                    if (element.NodeType == XmlNodeType.Element)
+                        defaultValues.Add(element.Name, element.InnerText);
             }
             catch (XmlException e) { throw new Exception(string.Format("Error occured while loading data from {0}.\n\n", xmlPath) + e.Message); }
         }   
