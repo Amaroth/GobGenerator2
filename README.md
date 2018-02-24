@@ -1,4 +1,4 @@
-# GobGenerator 2.0
+# GobGenerator 2.0 test3 pre-release
 Application can be used for two purpouses, both include mass imports of new gameobjects into gameobject_template (or table with similiar function, if you use different emu).
 
 Supports:
