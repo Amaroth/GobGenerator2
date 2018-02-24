@@ -53,12 +53,12 @@
         <TextBlock Grid.Column="0" Grid.Row="14" VerticalAlignment="Center">Gob name postfix:</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="15" VerticalAlignment="Center">Data import method:</TextBlock>
 
-        <Button Grid.Column="0" Grid.Row="17" Name="saveButt" Content="Save settings" Click="saveButt_Click" Margin="5,0,5,0">
+        <Button Grid.Column="0" Grid.Row="17" Name="saveButt" Content="Save settings" Click="saveButt_Click" Margin="0,0,5,0">
             <Button.ToolTip>
                 <TextBlock TextWrapping="Wrap" MaxWidth="300">Saves data you entered into form and uses your prefferences as default on next startup.</TextBlock>
             </Button.ToolTip>
         </Button>
-        <Button Grid.Column="0" Grid.Row="18" Name="helpButt" Content="Help" Click="helpButt_Click" Margin="5,0,5,0">
+        <Button Grid.Column="0" Grid.Row="18" Name="helpButt" Content="Help" Click="helpButt_Click" Margin="0,0,5,0">
             <Button.ToolTip>
                 <TextBlock TextWrapping="Wrap" MaxWidth="300">Opens repository's issue tracker.</TextBlock>
             </Button.ToolTip>

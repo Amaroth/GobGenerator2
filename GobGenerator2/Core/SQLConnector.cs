@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security;
+using System.Text;
 using System.Windows;
 
 namespace GobGenerator2.Core
@@ -115,58 +116,60 @@ namespace GobGenerator2.Core
             connection.Open();
 
 
-            string query = "START TRANSACTION;\r\n";
+            var query = new StringBuilder("START TRANSACTION;\r\n");
             if (m2DisplayIDs.Count > 0)
             {
                 if (useInsert)
-                    query += "INSERT";
+                    query.Append("INSERT");
                 else
-                    query += "REPLACE";
+                    query.Append("REPLACE");
 
-                string m2Cols = string.Format("`{0}`, `{1}`, `{2}`", m2Config.entryColName, m2Config.displayIDColName, m2Config.nameColName);
+                var m2Cols = new StringBuilder();
+                m2Cols.AppendFormat("`{0}`, `{1}`, `{2}`", m2Config.entryColName, m2Config.displayIDColName, m2Config.nameColName);
                 foreach (var col in m2Config.defaultValues)
-                    m2Cols += ", `" + col.Key + "`";
+                    m2Cols.AppendFormat(", `{0}`", col.Key);
 
-                query += string.Format(" INTO `{0}` ({1}) VALUES\r\n", table, m2Cols);
+                query.AppendFormat(" INTO `{0}` ({1}) VALUES\r\n", table, m2Cols);
                 bool firstM = true;
                 foreach (var displayID in m2DisplayIDs)
                 {
                     if (!firstM)
-                        query += ",\r\n";
-                    query += string.Format("({0}, {1}, \"{2}\"", baseEntry + displayID.Item1, displayID.Item1, displayID.Item2);
-                    foreach (var col in m2Config.defaultValues)
-                        query += ", \"" + col.Value + "\"";
-                    query += ")";
+                        query.Append(",\r\n");
                     firstM = false;
+                    query.AppendFormat("({0}, {1}, \"{2}\"", baseEntry + displayID.Item1, displayID.Item1, displayID.Item2);
+                    foreach (var col in m2Config.defaultValues)
+                        query.AppendFormat(", \"{0}\"", col.Value);
+                    query.Append(")");
                 }
-                query += ";\n";
+                query.Append(";\n");
             }
             if (wmoDisplayIDs.Count > 0)
             {
                 if (useInsert)
-                    query += "INSERT";
+                    query.Append("INSERT");
                 else
-                    query += "REPLACE";
+                    query.Append("REPLACE");
 
-                string wmoCols = string.Format("`{0}`, `{1}`, `{2}`", wmoConfig.entryColName, wmoConfig.displayIDColName, wmoConfig.nameColName);
+                var wmoCols = new StringBuilder();
+                wmoCols.AppendFormat("`{0}`, `{1}`, `{2}`", wmoConfig.entryColName, wmoConfig.displayIDColName, wmoConfig.nameColName);
                 foreach (var col in wmoConfig.defaultValues)
-                    wmoCols += ", `" + col.Key + "`";
+                    wmoCols.AppendFormat(", `{0}`", col.Key);
 
-                query += string.Format(" INTO `{0}` ({1}) VALUES\r\n", table, wmoCols);
+                query.AppendFormat(" INTO `{0}` ({1}) VALUES\r\n", table, wmoCols);
                 bool firstW = true;
                 foreach (var displayID in wmoDisplayIDs)
                 {
                     if (!firstW)
-                        query += ",\r\n";
-                    query += string.Format("({0}, {1}, \"{2}\"", baseEntry + displayID.Item1, displayID.Item1, displayID.Item2);
-                    foreach (var col in wmoConfig.defaultValues)
-                        query += ", \"" + col.Value + "\"";
-                    query += ")";
+                        query.Append(",\r\n");
                     firstW = false;
+                    query.AppendFormat("({0}, {1}, \"{2}\"", baseEntry + displayID.Item1, displayID.Item1, displayID.Item2);
+                    foreach (var col in wmoConfig.defaultValues)
+                        query.AppendFormat(", \"{0}\"", col.Value);
+                    query.Append(")");
                 }
-                query += ";\r\n";
+                query.Append(";\n");
             }
-            query += "COMMIT;";
+            query.Append("COMMIT;");
 
             using (var sw = new StreamWriter("SQLQueryBackup.sql"))
             {
@@ -174,7 +177,7 @@ namespace GobGenerator2.Core
             }
 
 
-            var command = new MySqlCommand(query, connection);
+            var command = new MySqlCommand(query.ToString(), connection);
             command.ExecuteNonQuery();
             connection.Close();
         }
