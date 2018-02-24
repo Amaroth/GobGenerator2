@@ -85,6 +85,8 @@ namespace GobGenerator2.Core
         public static string ToInsecureString(SecureString input)
         {
             string returnValue = string.Empty;
+            if (input == null)
+                return returnValue;
             IntPtr ptr = System.Runtime.InteropServices.Marshal.SecureStringToBSTR(input);
             try
             {
